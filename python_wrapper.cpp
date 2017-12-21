@@ -14,8 +14,8 @@ using namespace std;
 extern "C" {
     Rhd2000EvalBoard* _new(){ return new Rhd2000EvalBoard(); } 
     int open(Rhd2000EvalBoard* b){ return b->open(); }
-    bool uploadFpgaBitfile(Rhd2000EvalBoard* b, string filename){ return b->uploadFpgaBitfile(filename);}
-    void initialize(Rhd2000EvalBoard* b){ b->initialize();}
+    bool uploadFpgaBitfile(Rhd2000EvalBoard* b, char* filename){ return b->uploadFpgaBitfile(string(filename)); }
+    void initialize(Rhd2000EvalBoard* b){ b->initialize(); }
     bool setSampleRate(Rhd2000EvalBoard* b, Rhd2000EvalBoard::AmplifierSampleRate newSampleRate){ return b->setSampleRate(newSampleRate); }
     double getSampleRate(Rhd2000EvalBoard* b){ return b->getSampleRate(); }
     Rhd2000EvalBoard::AmplifierSampleRate getSampleRateEnum(Rhd2000EvalBoard* b){ return b->getSampleRateEnum(); }

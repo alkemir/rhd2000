@@ -12,7 +12,7 @@ using namespace std;
 #include "okFrontPanelDLL.h"
 
 extern "C" {
-    Rhd2000EvalBoard* _new(){ return new Rhd2000EvalBoard(); } 
+    Rhd2000EvalBoard* _new(){ return new Rhd2000EvalBoard(); }
     int open(Rhd2000EvalBoard* b){ return b->open(); }
     bool uploadFpgaBitfile(Rhd2000EvalBoard* b, char* filename){ return b->uploadFpgaBitfile(string(filename)); }
     void initialize(Rhd2000EvalBoard* b){ b->initialize(); }
@@ -64,4 +64,12 @@ extern "C" {
     int getBoardMode(Rhd2000EvalBoard* b){ return b->getBoardMode(); }
     int getCableDelayPort(Rhd2000EvalBoard* b, Rhd2000EvalBoard::BoardPort port){ return b->getCableDelay(port); }
     void getCableDelays(Rhd2000EvalBoard* b, vector<int> &delays){ b->getCableDelay(delays); }
+}
+
+extern "C" {
+    vector<int>* new_int_vector(){ return new vector<int>; }
+    void delete_int_vector(vector<int>* v){ delete v; }
+    int vector_int_size(vector<int>* v){ return v->size(); }
+    int vector_int_get(vector<int>* v, int i){ return v->at(i); }
+    void vector_int_push_back(vector<int>* v, int i){ v->push_back(i); }
 }

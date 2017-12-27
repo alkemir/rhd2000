@@ -21,7 +21,7 @@ extern "C" {
     Rhd2000EvalBoard::AmplifierSampleRate getSampleRateEnum(Rhd2000EvalBoard* b){ return b->getSampleRateEnum(); }
     void uploadCommandList(Rhd2000EvalBoard* b, vector<int> &commandList, Rhd2000EvalBoard::AuxCmdSlot auxCommandSlot, int bank){ b->uploadCommandList(commandList, auxCommandSlot, bank); }
     void printCommandList(Rhd2000EvalBoard* b, vector<int> &commandList){ b->printCommandList(commandList); }
-    void selectAuxCommandBank(Rhd2000EvalBoard* b, Rhd2000EvalBoard::BoardPort port, Rhd2000EvalBoard::AuxCmdSlot auxCommandSlot, int bank){ b->selectAuxCommandBank(port, auxCommandSlot); }
+    void selectAuxCommandBank(Rhd2000EvalBoard* b, Rhd2000EvalBoard::BoardPort port, Rhd2000EvalBoard::AuxCmdSlot auxCommandSlot, int bank){ b->selectAuxCommandBank(port, auxCommandSlot, bank); }
     void selectAuxCommandLength(Rhd2000EvalBoard* b, Rhd2000EvalBoard::AuxCmdSlot auxCommandSlot, int loopIndex, int endIndex){ b->selectAuxCommandLength(auxCommandSlot, loopIndex, endIndex); }
     void resetBoard(Rhd2000EvalBoard* b){ b->resetBoard(); }
     void setContinuousRunMode(Rhd2000EvalBoard* b, bool continuousMode){ b->setContinuousRunMode(continuousMode); }

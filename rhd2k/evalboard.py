@@ -109,162 +109,162 @@ class EvalBoard:
 	rhd2klib.getCableDelays.argtypes = [ctypes.c_void_p, ctypes.c_void_p]
 
 	def __init__(self):
-		self.pointer = rhd2klib.newBoard()
+		self._as_parameter_ = rhd2klib.newBoard()
 
 	def open(self):
-		return rhd2klib.open(self.pointer)
+		return rhd2klib.open(self)
 
 	def uploadFpgaBitfile(self, filename):
-		return rhd2klib.uploadFpgaBitfile(self.pointer, filename)
+		return rhd2klib.uploadFpgaBitfile(self, filename)
 
 	def initialize(self):
-		rhd2klib.initialize(self.pointer)
+		rhd2klib.initialize(self)
 
 	def setSampleRate(self, newSampleRate):
-		return rhd2klib.setSampleRate(self.pointer, newSampleRate)
+		return rhd2klib.setSampleRate(self, newSampleRate)
 
 	def getSampleRate(self):
-		return rhd2klib.getSampleRate(self.pointer)
+		return rhd2klib.getSampleRate(self)
 
 	def getSampleRateEnum(self):
-		return rhd2klib.getSampleRateEnum(self.pointer)
+		return rhd2klib.getSampleRateEnum(self)
 
 	def uploadCommandList(self, commandList, auxCommandSlot, bank):
-		rhd2klib.uploadCommandList(self.pointer, commandList.pointer, auxCommandSlot, bank)
+		rhd2klib.uploadCommandList(self, commandList, auxCommandSlot, bank)
 
 	def printCommandList(self, commandList):
-		rhd2klib.printCommandList(self.pointer, commandList.pointer)
+		rhd2klib.printCommandList(self, commandList)
 
 	def selectAuxCommandBank(self, port, auxCommandSlot, bank):
-		rhd2klib.selectAuxCommandBank(self.pointer, port, auxCommandSlot, bank)
+		rhd2klib.selectAuxCommandBank(self, port, auxCommandSlot, bank)
 
 	def selectAuxCommandLength(self, auxCommandSlot, loopIndex, endIndex):
-		rhd2klib.selectAuxCommandLength(self.pointer, auxCommandSlot, loopIndex, endIndex)
+		rhd2klib.selectAuxCommandLength(self, auxCommandSlot, loopIndex, endIndex)
 
 	def resetBoard(self):
-		rhd2klib.resetBoard(self.pointer)
+		rhd2klib.resetBoard(self)
 
 	def setContinuousRunMode(self, continuousMode):
-		rhd2klib.setContinuousRunMode(self.pointer, continuousMode)
+		rhd2klib.setContinuousRunMode(self, continuousMode)
 
 	def setMaxTimeStep(self, maxTimeStep):
-		rhd2klib.setMaxTimeStep(self.pointer, maxTimeStep)
+		rhd2klib.setMaxTimeStep(self, maxTimeStep)
 
 	def run(self):
-		rhd2klib.run(self.pointer)
+		rhd2klib.run(self)
 
 	def isRunning(self):
-		return rhd2klib.isRunning(self.pointer)
+		return rhd2klib.isRunning(self)
 
 	def numWordsInFifo(self):
-		return rhd2klib.numWordsInFifo(self.pointer)
+		return rhd2klib.numWordsInFifo(self)
 
 	@staticmethod
 	def fifoCapacityInWords():
 		return rhd2klib.fifoCapacityInWords()
 
 	def setCableDelay(self, port, delay):
-		rhd2klib.setCableDelay(self.pointer, port, delay)
+		rhd2klib.setCableDelay(self, port, delay)
 
 	def setCableLengthMeters(self, port, lengthInMeters):
-		rhd2klib.setCableLengthMeters(self.pointer, port, lengthInMeters)
+		rhd2klib.setCableLengthMeters(self, port, lengthInMeters)
 
 	def setCableLengthFeet(self, port, lengthInFeet):
-		rhd2klib.setCableLengthFeet(self.pointer, port, lengthInFeet)
+		rhd2klib.setCableLengthFeet(self, port, lengthInFeet)
 
 	def estimateCableLengthMeters(self, delay):
-		return rhd2klib.estimateCableLengthMeters(self.pointer, delay)
+		return rhd2klib.estimateCableLengthMeters(self, delay)
 
 	def estimateCableLengthFeet(self, delay):
-		return rhd2klib.estimateCableLengthFeet(self.pointer, delay)
+		return rhd2klib.estimateCableLengthFeet(self, delay)
 
 	def setDspSettle(self, enabled):
-		rhd2klib.setDspSettle(self.pointer, enabled)
+		rhd2klib.setDspSettle(self, enabled)
 
 	def setDataSource(self, stream, dataSource):
-		rhd2klib.setDataSource(self.pointer, stream, dataSource)
+		rhd2klib.setDataSource(self, stream, dataSource)
 
 	def enableDataStream(self, stream, enabled):
-		rhd2klib.enableDataStream(self.pointer, stream, enabled)
+		rhd2klib.enableDataStream(self, stream, enabled)
 
 	def getNumEnabledDataStreams(self):
-		return rhd2klib.getNumEnabledDataStreams(self.pointer)
+		return rhd2klib.getNumEnabledDataStreams(self)
 
 	def clearTtlOut(self):
-		rhd2klib.clearTtlOut(self.pointer)
+		rhd2klib.clearTtlOut(self)
 
 	def setTtlOut(self, ttlOutArray):
 		ttlOutArray = (ctypes.c_int * len(ttlOutArray))(*ttlOutArray)
-		rhd2klib.setTtlOut(self.pointer, ttlOutArray)
+		rhd2klib.setTtlOut(self, ttlOutArray)
 
 	def getTtlIn(self, length):
 		ttlInArray = (ctypes.c_int * length)
-		rhd2klib.getTtlIn(self.pointer, ttlInArray)
+		rhd2klib.getTtlIn(self, ttlInArray)
 		return ttlInArray #test this
 
 	def setDacManual(self, value):
-		rhd2klib.setDacManual(self.pointer, value)
+		rhd2klib.setDacManual(self, value)
 
 	def setLedDisplay(self, ledArray):
 		ledArray = (ctypes.c_int * len(ledArray))(*ledArray)
-		rhd2klib.setLedDisplay(self.pointer, ledArray)
+		rhd2klib.setLedDisplay(self, ledArray)
 
 	def enableDac(self, dacChannel, enabled):
-		rhd2klib.enableDac(self.pointer, dacChannel, enabled)
+		rhd2klib.enableDac(self, dacChannel, enabled)
 
 	def setDacGain(self, gain):
-		rhd2klib.setDacGain(self.pointer, gain)
+		rhd2klib.setDacGain(self, gain)
 
 	def setAudioNoiseSuppress(self, noiseSuppress):
-		rhd2klib.setAudioNoiseSuppress(self.pointer, noiseSuppress)
+		rhd2klib.setAudioNoiseSuppress(self, noiseSuppress)
 
 	def selectDacDataStream(self, dacChannel, stream):
-		rhd2klib.selectDacDataStream(self.pointer, dacChannel, stream)
+		rhd2klib.selectDacDataStream(self, dacChannel, stream)
 
 	def selectDacDataChannel(self, dacChannel, dataChannel):
-		rhd2klib.selectDacDataChannel(self.pointer, dacChannel, dataChannel)
+		rhd2klib.selectDacDataChannel(self, dacChannel, dataChannel)
 
 	def enableExternalFastSettle(self, enable):
-		rhd2klib.enableExternalFastSettle(self.pointer, enable)
+		rhd2klib.enableExternalFastSettle(self, enable)
 
 	def setExternalFastSettleChannel(self, channel):
-		rhd2klib.setExternalFastSettleChannel(self.pointer, channel)
+		rhd2klib.setExternalFastSettleChannel(self, channel)
 
 	def enableExternalDigOut(self, port, enable):
-		rhd2klib.enableExternalDigOut(self.pointer, port, enable)
+		rhd2klib.enableExternalDigOut(self, port, enable)
 
 	def setExternalDigOutChannel(self, port, channel):
-		rhd2klib.setExternalDigOutChannel(self.pointer, port, channel)
+		rhd2klib.setExternalDigOutChannel(self, port, channel)
 
 	def enableDacHighpassFilter(self, enable):
-		rhd2klib.enableDacHighpassFilter(self.pointer, enable)
+		rhd2klib.enableDacHighpassFilter(self, enable)
 
 	def setDacHighpassFilter(self, cutoff):
-		rhd2klib.setDacHighpassFilter(self.pointer, cutoff)
+		rhd2klib.setDacHighpassFilter(self, cutoff)
 
 	def setDacThreshold(self, dacChannel, threshold, trigPolarity):
-		rhd2klib.setDacThreshold(self.pointer, dacChannel, threshold, trigPolarity)
+		rhd2klib.setDacThreshold(self, dacChannel, threshold, trigPolarity)
 
 	def setTtlMode(self, mode):
-		rhd2klib.setTtlMode(self.pointer, mode)
+		rhd2klib.setTtlMode(self, mode)
 
 	def flush(self):
-		rhd2klib.flush(self.pointer)
+		rhd2klib.flush(self)
 
 	def readDataBlock(self, dataBlock):
-		return rhd2klib.readDataBlock(self.pointer, dataBlock)
+		return rhd2klib.readDataBlock(self, dataBlock)
 
 	def readDataBlocks(self, numBlocks, dataQueue):
-		return rhd2klib.readDataBlocks(self.pointer, numBlocks, dataQueue)
+		return rhd2klib.readDataBlocks(self, numBlocks, dataQueue)
 
 	def queueToFile(self, dataQueue, saveOut):
-		return rhd2klib.queueToFile(self.pointer, dataQueue, saveOut)
+		return rhd2klib.queueToFile(self, dataQueue, saveOut)
 
 	def getBoardMode(self):
-		return rhd2klib.getBoardMode(self.pointer)
+		return rhd2klib.getBoardMode(self)
 
 	def getCableDelayPort(self, port):
-		return rhd2klib.getCableDelay(self.pointer, port)
+		return rhd2klib.getCableDelay(self, port)
 
 	def getCableDelays(self, delays):
-		rhd2klib.getCableDelays(self.pointer, delays)
+		rhd2klib.getCableDelays(self, delays)

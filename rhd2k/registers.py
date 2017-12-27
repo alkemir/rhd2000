@@ -67,94 +67,94 @@ class Registers:
     rhd2klib.createRhd2000Command2.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int, ctypes.c_int]
 
     def __init__(self, sampleRate):
-        self.pointer = rhd2klib.newRegisters(sampleRate)
+        self._as_parameter_ = rhd2klib.newRegisters(sampleRate)
 
     def defineSampleRate(self, newSampleRate):
-        rhd2klib.defineSampleRate(self.pointer, newSampleRate)
+        rhd2klib.defineSampleRate(self, newSampleRate)
 
     def setFastSettle(self, enabled):
-        rhd2klib.setFastSettle(self.pointer, enabled)
+        rhd2klib.setFastSettle(self, enabled)
 
     def setDigOutLow(self):
-        rhd2klib.setDigOutLow(self.pointer)
+        rhd2klib.setDigOutLow(self)
 
     def setDigOutHigh(self):
-        rhd2klib.setDigOutHigh(self.pointer)
+        rhd2klib.setDigOutHigh(self)
 
     def setDigOutHiZ(self):
-        rhd2klib.setDigOutHiZ(self.pointer)
+        rhd2klib.setDigOutHiZ(self)
 
     def enableAux1(self, enabled):
-        rhd2klib.enableAux1(self.pointer, enabled)
+        rhd2klib.enableAux1(self, enabled)
 
     def enableAux2(self, enabled):
-        rhd2klib.enableAux2(self.pointer, enabled)
+        rhd2klib.enableAux2(self, enabled)
 
     def enableAux3(self, enabled):
-        rhd2klib.enableAux3(self.pointer, enabled)
+        rhd2klib.enableAux3(self, enabled)
 
     def enableDsp(self, enabled):
-        rhd2klib.enableDsp(self.pointer, enabled)
+        rhd2klib.enableDsp(self, enabled)
 
     #def disableDsp(self):
-    #    rhd2klib.disableDsp(self.pointer)
+    #    rhd2klib.disableDsp(self)
 
     def setDspCutoffFreq(self, newDspCutoffFreq):
-        return rhd2klib.setDspCutoffFreq(self.pointer, newDspCutoffFreq)
+        return rhd2klib.setDspCutoffFreq(self, newDspCutoffFreq)
 
     def getDspCutoffFreq(self):
-        return rhd2klib.getDspCutoffFreq(self.pointer)
+        return rhd2klib.getDspCutoffFreq(self)
 
     def enableZcheck(self, enabled):
-        rhd2klib.enableZcheck(self.pointer, enabled)
+        rhd2klib.enableZcheck(self, enabled)
 
     def setZcheckDacPower(self, enabled):
-        rhd2klib.setZcheckDacPower(self.pointer, enabled)
+        rhd2klib.setZcheckDacPower(self, enabled)
 
     def setZcheckScale(self, scale):
-        rhd2klib.setZcheckScale(self.pointer, scale)
+        rhd2klib.setZcheckScale(self, scale)
 
     def setZcheckPolarity(self, polarity):
-        rhd2klib.setZcheckPolarity(self.pointer, polarity)
+        rhd2klib.setZcheckPolarity(self, polarity)
 
     def setZcheckChannel(self, channel):
-        return rhd2klib.setZcheckChannel(self.pointer, channel)
+        return rhd2klib.setZcheckChannel(self, channel)
 
     def setAmpPowered(self, channel, powered):
-        rhd2klib.setAmpPowered(self.pointer, channel, powered)
+        rhd2klib.setAmpPowered(self, channel, powered)
 
     def powerUpAllAmps(self):
-        rhd2klib.powerUpAllAmps(self.pointer)
+        rhd2klib.powerUpAllAmps(self)
 
     def powerDownAllAmps(self):
-        rhd2klib.powerDownAllAmps(self.pointer)
+        rhd2klib.powerDownAllAmps(self)
 
     def getRegisterValue(self, reg):
-        return rhd2klib.getRegisterValue(self.pointer, reg)
+        return rhd2klib.getRegisterValue(self, reg)
 
     def setUpperBandwidth(self, upperBandwidth):
-        return rhd2klib.setUpperBandwidth(self.pointer, upperBandwidth)
+        return rhd2klib.setUpperBandwidth(self, upperBandwidth)
 
     def setLowerBandwidth(self, lowerBandwidth):
-        return rhd2klib.setLowerBandwidth(self.pointer, lowerBandwidth)
+        return rhd2klib.setLowerBandwidth(self, lowerBandwidth)
 
     def createCommandListRegisterConfig(self, commandList, calibrate):
-        return rhd2klib.createCommandListRegisterConfig(self.pointer, commandList.pointer, calibrate)
+        return rhd2klib.createCommandListRegisterConfig(self, commandList, calibrate)
 
     def createCommandListTempSensor(self, commandList):
-        return rhd2klib.createCommandListTempSensor(self.pointer, commandList.pointer)
+        return rhd2klib.createCommandListTempSensor(self, commandList)
 
     def createCommandListUpdateDigOut(self, commandList):
-        return rhd2klib.createCommandListUpdateDigOut(self.pointer, commandList.pointer)
+        return rhd2klib.createCommandListUpdateDigOut(self, commandList)
 
     def createCommandListZcheckDac(self, commandList, frequency, amplitude):
-        return rhd2klib.createCommandListZcheckDac(self.pointer, commandList.pointer, frequency, amplitude)
+        return rhd2klib.createCommandListZcheckDac(self, commandList, frequency, amplitude)
 
     def createRhd2000Command0(self, commandType):
-        return rhd2klib.createRhd2000Command0(self.pointer, commandType)
+        return rhd2klib.createRhd2000Command0(self, commandType)
 
     def createRhd2000Command1(self, commandType, arg1):
-        return rhd2klib.createRhd2000Command0(self.pointer, commandType, arg1)
+        return rhd2klib.createRhd2000Command0(self, commandType, arg1)
 
     def createRhd2000Command2(self, commandType, arg1, arg2):
-        return rhd2klib.createRhd2000Command0(self.pointer, commandType, arg1, arg2)
+        return rhd2klib.createRhd2000Command0(self, commandType, arg1, arg2)

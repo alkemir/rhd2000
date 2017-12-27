@@ -77,6 +77,7 @@ extern "C" {
 extern "C" {
     queue<Rhd2000DataBlock>* new_data_queue(){ return new queue<Rhd2000DataBlock>; }
     void delete_data_queue(queue<Rhd2000DataBlock>* q) {delete q;}
+    unsigned int data_queue_size(queue<Rhd2000DataBlock>* q) { return q->size(); }
 }
 
 extern "C" {

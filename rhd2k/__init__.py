@@ -4,3 +4,4 @@ import vector
 import registers
 import datablocks
 import ofstream
+import dataqueue

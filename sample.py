@@ -118,30 +118,27 @@ print ("setting filename")
 filename = "./test_" + now + ".dat"
 print(filename)
 
-print ("openning file for writting")
+print ("opening file for writting")
 saveOut = rhd2k.ofstream.Ofstream()
 saveOut.open(filename)
 
-"""
-    queue<Rhd2000DataBlock> dataQueue
+print ("creating data queue")
+queue = rhd2k.dataqueue.DataQueue()
 
-    // Run for one second.
-    board.setMaxTimeStep(20000)
-    cout << "Reading one second of RHD2000 data..." << endl
-    board.run()
+print ("running for one second")
+board.setMaxTimeStep(20000)
+board.run()
 
-    bool usbDataRead
-    do {
-        usbDataRead = board.readDataBlocks(1, dataQueue)
-        if (dataQueue.size() >= 50) {
-            board.queueToFile(dataQueue, saveOut)
-        }
-    } while (usbDataRead || board.isRunning())
+print ("waiting for data")
+usbDataRead = True
+while (usbDataRead or board.isRunning()):
+    usbDataRead = board.readDataBlocks(1, queue)
+    if (len(queue) >= 50):
+        board.queueToFile(queue, saveOut)
 
-    board.queueToFile(dataQueue, saveOut)
+print ("pointing queue to file")
+board.queueToFile(queue, saveOut)
 
-
-"""
 print ("flushing board")
 board.flush()
 

@@ -33,7 +33,6 @@ commandList = rhd2k.vector.Vector()
 
 print ("creating sequence for impedance testing")
 commandSequenceLength = chipRegisters.createCommandListZcheckDac(commandList, 1000.0, 128.0)
-print commandSequenceLength
 
 print ("uploading commands")
 board.uploadCommandList(commandList, rhd2k.constants.AuxCmd1, 0)

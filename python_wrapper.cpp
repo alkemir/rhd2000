@@ -19,10 +19,10 @@ extern "C" {
     bool setSampleRate(Rhd2000EvalBoard* b, Rhd2000EvalBoard::AmplifierSampleRate newSampleRate){ return b->setSampleRate(newSampleRate); }
     double getSampleRate(Rhd2000EvalBoard* b){ return b->getSampleRate(); }
     Rhd2000EvalBoard::AmplifierSampleRate getSampleRateEnum(Rhd2000EvalBoard* b){ return b->getSampleRateEnum(); }
-    void uploadCommandList(Rhd2000EvalBoard* b,  vector<int> &commandList, Rhd2000EvalBoard::AuxCmdSlot auxCommandSlot, int bank){;}
-    void printCommandList(Rhd2000EvalBoard* b,  vector<int> &commandList){;}
-    void selectAuxCommandBank(Rhd2000EvalBoard* b, Rhd2000EvalBoard::BoardPort port, Rhd2000EvalBoard::AuxCmdSlot auxCommandSlot, int bank){;}
-    void selectAuxCommandLength(Rhd2000EvalBoard* b, Rhd2000EvalBoard::AuxCmdSlot auxCommandSlot, int loopIndex, int endIndex){;}
+    void uploadCommandList(Rhd2000EvalBoard* b, vector<int> &commandList, Rhd2000EvalBoard::AuxCmdSlot auxCommandSlot, int bank){ b->uploadCommandList(commandList, auxCommandSlot, bank); }
+    void printCommandList(Rhd2000EvalBoard* b, vector<int> &commandList){ b->printCommandList(commandList); }
+    void selectAuxCommandBank(Rhd2000EvalBoard* b, Rhd2000EvalBoard::BoardPort port, Rhd2000EvalBoard::AuxCmdSlot auxCommandSlot, int bank){ b->selectAuxCommandBank(port, auxCommandSlot); }
+    void selectAuxCommandLength(Rhd2000EvalBoard* b, Rhd2000EvalBoard::AuxCmdSlot auxCommandSlot, int loopIndex, int endIndex){ b->selectAuxCommandLength(auxCommandSlot, loopIndex, endIndex); }
     void resetBoard(Rhd2000EvalBoard* b){ b->resetBoard(); }
     void setContinuousRunMode(Rhd2000EvalBoard* b, bool continuousMode){ b->setContinuousRunMode(continuousMode); }
     void setMaxTimeStep(Rhd2000EvalBoard* b, unsigned int maxTimeStep){ b->setMaxTimeStep(maxTimeStep); }
@@ -67,17 +67,17 @@ extern "C" {
 }
 
 extern "C" {
-    vector<int>* new_int_vector(){ return new vector<int>; }
-    void delete_int_vector(vector<int>* v){ delete v; }
+    vector<int>* new_vector_int(){ return new vector<int>; }
+    void vector_int_delete(vector<int>* v){ delete v; }
     int vector_int_size(vector<int>* v){ return v->size(); }
     int vector_int_get(vector<int>* v, int i){ return v->at(i); }
     void vector_int_push_back(vector<int>* v, int i){ v->push_back(i); }
 }
 
 extern "C" {
-    queue<Rhd2000DataBlock>* new_data_queue(){ return new queue<Rhd2000DataBlock>; }
-    void delete_data_queue(queue<Rhd2000DataBlock>* q) {delete q;}
-    unsigned int data_queue_size(queue<Rhd2000DataBlock>* q) { return q->size(); }
+    queue<Rhd2000DataBlock>* new_queue_data(){ return new queue<Rhd2000DataBlock>; }
+    void queue_data_delete(queue<Rhd2000DataBlock>* q) {delete q;}
+    unsigned int queue_data_size(queue<Rhd2000DataBlock>* q) { return q->size(); }
 }
 
 extern "C" {

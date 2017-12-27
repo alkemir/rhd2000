@@ -11,8 +11,8 @@ class DataBlock:
     rhd2klib.getSamplesPerDataBlock.argtypes = []
     rhd2klib.fillFromUsbBuffer.restype = None
     rhd2klib.fillFromUsbBuffer.argtypes = [ctypes.c_void_p, ctypes.c_void_p, ctypes.c_int, ctypes.c_int]
-    rhd2klib.print.restype = None
-    rhd2klib.print.argtypes = [ctypes.c_void_p, ctypes.c_int]
+    rhd2klib.printData.restype = None
+    rhd2klib.printData.argtypes = [ctypes.c_void_p, ctypes.c_int]
     rhd2klib.write.restype = None
     rhd2klib.write.argtypes = [ctypes.c_void_p, ctypes.c_void_p, ctypes.c_int]
     rhd2klib.checkUsbHeader.restype = ctypes.c_bool
@@ -32,8 +32,8 @@ class DataBlock:
     def fillFromUsbBuffer(self, usbBuffer, blockIndex, numDataStreams):
         rhd2klib.fillFromUsbBuffer(self.pointer, usbBuffer, blockIndex, numDataStreams)
 
-    def print(self, stream):
-        rhd2klib.print(self.pointer, stream)
+    def printData(self, stream):
+        rhd2klib.printData(self.pointer, stream)
 
     def write(self, saveOut, numDataStreams):
         rhd2klib.write(self.pointer, saveOut, numDataStreams)

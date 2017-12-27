@@ -1,4 +1,5 @@
-from datetime import datetime, strftime
+from datetime import datetime
+from time import strftime
 import rhd2k
 
 print ("creating board")
@@ -103,7 +104,7 @@ print ("reading data block")
 board.readDataBlock(dataBlock)
 
 print ("printing data")
-dataBlock.print(0)
+dataBlock.printData(0)
 
 print ("number of 16-bit words in FIFO: ")
 print (board.numWordsInFifo())

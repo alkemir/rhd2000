@@ -113,7 +113,7 @@ extern "C" {
   unsigned int calculateDataBlockSizeInWords(int numDataStreams){ return Rhd2000DataBlock::calculateDataBlockSizeInWords(numDataStreams); }
   unsigned int getSamplesPerDataBlock(){ return Rhd2000DataBlock::getSamplesPerDataBlock(); }
   void fillFromUsbBuffer(Rhd2000DataBlock* d, unsigned char usbBuffer[], int blockIndex, int numDataStreams){ d->fillFromUsbBuffer(usbBuffer, blockIndex, numDataStreams); }
-  void print(Rhd2000DataBlock* d, int stream){ d->print(stream); }
+  void printData(Rhd2000DataBlock* d, int stream){ d->print(stream); }
   void write(Rhd2000DataBlock* d, ofstream &saveOut, int numDataStreams){ d->write(saveOut, numDataStreams); }
   bool checkUsbHeader(Rhd2000DataBlock* d, unsigned char usbBuffer[], int index){ return d->checkUsbHeader(usbBuffer, index); }
 }

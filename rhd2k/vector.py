@@ -18,6 +18,7 @@ class Vector:
         self.pointer = rhd2klib.new_int_vector()
 
     def __del__(self):
+        print ("deleting")
         rhd2klib.delete_int_vector(self.vector)
 
     def __len__(self):

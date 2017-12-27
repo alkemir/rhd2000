@@ -12,7 +12,7 @@ using namespace std;
 #include "okFrontPanelDLL.h"
 
 extern "C" {
-    Rhd2000EvalBoard* _new(){ return new Rhd2000EvalBoard(); }
+    Rhd2000EvalBoard* newBoard(){ return new Rhd2000EvalBoard(); }
     int open(Rhd2000EvalBoard* b){ return b->open(); }
     bool uploadFpgaBitfile(Rhd2000EvalBoard* b, char* filename){ return b->uploadFpgaBitfile(string(filename)); }
     void initialize(Rhd2000EvalBoard* b){ b->initialize(); }
@@ -29,7 +29,7 @@ extern "C" {
     void run(Rhd2000EvalBoard* b){ b->run(); }
     bool isRunning(Rhd2000EvalBoard* b){ return b->isRunning(); }
     unsigned int numWordsInFifo(Rhd2000EvalBoard* b){ return b->numWordsInFifo(); }
-    static unsigned int fifoCapacityInWords(Rhd2000EvalBoard* b){ return b->fifoCapacityInWords(); }
+    unsigned int fifoCapacityInWords(){ return Rhd2000EvalBoard::fifoCapacityInWords(); }
     void setCableDelay(Rhd2000EvalBoard* b, Rhd2000EvalBoard::BoardPort port, int delay){ b->setCableDelay(port, delay); }
     void setCableLengthMeters(Rhd2000EvalBoard* b, Rhd2000EvalBoard::BoardPort port, double lengthInMeters){ b->setCableLengthMeters(port, lengthInMeters); }
     void setCableLengthFeet(Rhd2000EvalBoard* b, Rhd2000EvalBoard::BoardPort port, double lengthInFeet){ b->setCableLengthFeet(port, lengthInFeet); }
@@ -72,4 +72,38 @@ extern "C" {
     int vector_int_size(vector<int>* v){ return v->size(); }
     int vector_int_get(vector<int>* v, int i){ return v->at(i); }
     void vector_int_push_back(vector<int>* v, int i){ v->push_back(i); }
+}
+
+extern "C" {
+    Rhd2000Registers* newRegisters(double sampleRate){ return new Rhd2000Registers(sampleRate); }
+    void defineSampleRate(Rhd2000Registers* r, double newSampleRate){ r->defineSampleRate(newSampleRate); }
+    void setFastSettle(Rhd2000Registers* r, bool enabled){ r->setFastSettle(enabled); }
+    void setDigOutLow(Rhd2000Registers* r){ r->setDigOutLow(); }
+    void setDigOutHigh(Rhd2000Registers* r){ r->setDigOutHigh(); }
+    void setDigOutHiZ(Rhd2000Registers* r){ r->setDigOutHiZ(); }
+    void enableAux1(Rhd2000Registers* r, bool enabled){ r->enableAux1(enabled); }
+    void enableAux2(Rhd2000Registers* r, bool enabled){ r->enableAux2(enabled); }
+    void enableAux3(Rhd2000Registers* r, bool enabled){ r->enableAux3(enabled); }
+    void enableDsp(Rhd2000Registers* r, bool enabled){ r->enableDsp(enabled); }
+    //void disableDsp(Rhd2000Registers* r){ r->disableDsp(); }
+    double setDspCutoffFreq(Rhd2000Registers* r, double newDspCutoffFreq){ return r->setDspCutoffFreq(newDspCutoffFreq); }
+    double getDspCutoffFreq(Rhd2000Registers* r) { return r->getDspCutoffFreq(); }
+    void enableZcheck(Rhd2000Registers* r, bool enabled){ r->enableZcheck(enabled); }
+    void setZcheckDacPower(Rhd2000Registers* r, bool enabled){ r->setZcheckDacPower(enabled); }
+    void setZcheckScale(Rhd2000Registers* r, Rhd2000Registers::ZcheckCs scale){ r->setZcheckScale(scale); }
+    void setZcheckPolarity(Rhd2000Registers* r, Rhd2000Registers::ZcheckPolarity polarity){ r->setZcheckPolarity(polarity); }
+    int setZcheckChannel(Rhd2000Registers* r, int channel){ return r->setZcheckChannel(channel); }
+    void setAmpPowered(Rhd2000Registers* r, int channel, bool powered){ r->setAmpPowered(channel, powered); }
+    void powerUpAllAmps(Rhd2000Registers* r){ r->powerUpAllAmps(); }
+    void powerDownAllAmps(Rhd2000Registers* r){ r->powerDownAllAmps(); }
+    int getRegisterValue(Rhd2000Registers* r, int reg) { return r->getRegisterValue(reg); }
+    double setUpperBandwidth(Rhd2000Registers* r, double upperBandwidth){ return r->setUpperBandwidth(upperBandwidth); }
+    double setLowerBandwidth(Rhd2000Registers* r, double lowerBandwidth){ return r->setLowerBandwidth(lowerBandwidth); }
+    int createCommandListRegisterConfig(Rhd2000Registers* r, vector<int> &commandList, bool calibrate){ return r->createCommandListRegisterConfig(commandList, calibrate); }
+    int createCommandListTempSensor(Rhd2000Registers* r, vector<int> &commandList){ return r->createCommandListTempSensor(commandList); }
+    int createCommandListUpdateDigOut(Rhd2000Registers* r, vector<int> &commandList){ return r->createCommandListUpdateDigOut(commandList); }
+    int createCommandListZcheckDac(Rhd2000Registers* r, vector<int> &commandList, double frequency, double amplitude){ return r->createCommandListZcheckDac(commandList, frequency, amplitude); }
+    int createRhd2000Command0(Rhd2000Registers* r, Rhd2000Registers::Rhd2000CommandType commandType){ return r->createRhd2000Command(commandType); }
+    int createRhd2000Command1(Rhd2000Registers* r, Rhd2000Registers::Rhd2000CommandType commandType, int arg1){ return r->createRhd2000Command(commandType, arg1); }
+    int createRhd2000Command2(Rhd2000Registers* r, Rhd2000Registers::Rhd2000CommandType commandType, int arg1, int arg2){ return r->createRhd2000Command(commandType, arg1, arg2); }
 }

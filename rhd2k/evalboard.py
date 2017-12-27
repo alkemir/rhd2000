@@ -3,8 +3,8 @@ import ctypes
 rhd2klib = ctypes.cdll.LoadLibrary('./librhd2k.so')
 
 class EvalBoard:
-	rhd2klib._new.restype = ctypes.c_void_p
-	rhd2klib._new.argtypes = []
+	rhd2klib.newBoard.restype = ctypes.c_void_p
+	rhd2klib.newBoard.argtypes = []
 	rhd2klib.open.restype = ctypes.c_int
 	rhd2klib.open.argtypes = [ctypes.c_void_p]
 	rhd2klib.uploadFpgaBitfile.restype = ctypes.c_bool
@@ -109,7 +109,7 @@ class EvalBoard:
 	rhd2klib.getCableDelays.argtypes = [ctypes.c_void_p, ctypes.c_void_p]
 
 	def __init__(self):
-		self.pointer = rhd2klib._new()
+		self.pointer = rhd2klib.newBoard()
 
 	def open(self):
 		return rhd2klib.open(self.pointer)
@@ -130,10 +130,10 @@ class EvalBoard:
 		return rhd2klib.getSampleRateEnum(self.pointer)
 
 	def uploadCommandList(self, commandList, auxCommandSlot, bank):
-		rhd2klib.uploadCommandList(self.pointer, commandList, auxCommandSlot, bank)
+		rhd2klib.uploadCommandList(self.pointer, commandList.pointer, auxCommandSlot, bank)
 
 	def printCommandList(self, commandList):
-		rhd2klib.printCommandList(self.pointer, commandList) 
+		rhd2klib.printCommandList(self.pointer, commandList.pointer)
 
 	def selectAuxCommandBank(self, port, auxCommandSlot, bank):
 		rhd2klib.selectAuxCommandBank(self.pointer, port, auxCommandSlot, bank)

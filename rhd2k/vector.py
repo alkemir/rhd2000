@@ -2,7 +2,7 @@ import ctypes
 
 rhd2klib = ctypes.cdll.LoadLibrary('./librhd2k.so')
 
-class Vector(object):
+class Vector:
     rhd2klib.new_int_vector.restype = ctypes.c_void_p
     rhd2klib.new_int_vector.argtypes = []
     rhd2klib.delete_int_vector.restype = None
@@ -15,10 +15,10 @@ class Vector(object):
     rhd2klib.vector_int_push_back.argtypes = [ctypes.c_void_p, ctypes.c_int]
 
     def __init__(self):
-        self.pointer = rhd2klib.new_vector_int()
+        self.pointer = rhd2klib.new_int_vector()
 
     def __del__(self):
-        rhd2klib.delete_vector_int(self.vector)
+        rhd2klib.delete_int_vector(self.vector)
 
     def __len__(self):
         return rhd2klib.vector_int_size(self.vector)

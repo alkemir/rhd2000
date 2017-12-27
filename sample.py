@@ -1,113 +1,113 @@
-import ../rdh2k
+import rhd2k
 
 print ("creating board")
-b = rdh2k.EvalBoard()
+board = rhd2k.evalboard.EvalBoard()
 
 print ("opening board")
-b.open()
+board.open()
 
 print ("uploading main.bit")
-b.uploadFpgaBitfile(b'main.bit')
+board.uploadFpgaBitfile(b'main.bit')
 
 print ("initializing")
-b.initialize()
+board.initialize()
 
 print ("setting data source")
-b.setDataSource(0, PortA1)
+board.setDataSource(0, rhd2k.constants.PortA1)
 
 print ("setting sample rate")
-b.setSampleRate(SampleRate20000Hz)
+board.setSampleRate(rhd2k.constants.SampleRate20000Hz)
 
 print ("setting MISO sampling delay to 3-feet cable")
-b.setCableLengthFeet(PortA, 3.0)
+board.setCableLengthFeet(rhd2k.constants.PortA, 3.0)
 
 print ("turn one LED on")
-b.setLedDisplay([1, 0, 0, 0, 0, 0, 0, 0])
+board.setLedDisplay([1, 0, 0, 0, 0, 0, 0, 0])
 
 print ("setup register to optimize MUX-related settings")
-#    Rhd2000Registers *chipRegisters
-#    chipRegisters = new Rhd2000Registers(b.getSampleRate())
+chipRegisters = rhd2k.registers.Registers(board.getSampleRate())
 
 print ("creating command list")
-#    int commandSequenceLength
-#    vector<int> commandList
+commandList = rhd2k.vector.Vector()
 
-"""
-    // First, let's create a command list for the AuxCmd1 slot.  This command
-    // sequence will create a 1 kHz, full-scale sine wave for impedance testing.
-    commandSequenceLength = chipRegisters->createCommandListZcheckDac(commandList, 1000.0, 128.0) // 1000.0, 128.0
-    b.uploadCommandList(commandList, Rhd2000EvalBoard::AuxCmd1, 0)
-    b.selectAuxCommandLength(Rhd2000EvalBoard::AuxCmd1, 0, commandSequenceLength - 1)
-    b.selectAuxCommandBank(Rhd2000EvalBoard::PortA, Rhd2000EvalBoard::AuxCmd1, 0)
-    // b.printCommandList(commandList) // optionally, print command list
+print ("creating sequence for impedance testing")
+commandSequenceLength = chipRegisters.createCommandListZcheckDac(commandList, 1000.0, 128.0)
+print commandSequenceLength
 
-    // Next, we'll create a command list for the AuxCmd2 slot.  This command sequence
-    // will sample the temperature sensor and other auxiliary ADC inputs.
-    commandSequenceLength = chipRegisters->createCommandListTempSensor(commandList)
-    b.uploadCommandList(commandList, Rhd2000EvalBoard::AuxCmd2, 0)
-    b.selectAuxCommandLength(Rhd2000EvalBoard::AuxCmd2, 0, commandSequenceLength - 1)
-    b.selectAuxCommandBank(Rhd2000EvalBoard::PortA, Rhd2000EvalBoard::AuxCmd2, 0)
-    // b.printCommandList(commandList) // optionally, print command list
+print ("uploading commands")
+board.uploadCommandList(commandList, rhd2k.constants.AuxCmd1, 0)
+board.selectAuxCommandLength(rhd2k.constants.AuxCmd1, 0, commandSequenceLength - 1)
+board.selectAuxCommandBank(rhd2k.constants.PortA, rhd2k.constants.AuxCmd1, 0)
 
-    // For the AuxCmd3 slot, we will create two command sequences.  Both sequences
-    // will configure and read back the RHD2000 chip registers, but one sequence will
-    // also run ADC calibration.
+print ("printing commands")
+board.printCommandList(commandList)
 
-    // Before generating register configuration command sequences, set amplifier
-    // bandwidth paramters.
+print ("creating sequence for temp sensor and aux ADC")
+commandSequenceLength = chipRegisters.createCommandListTempSensor(commandList)
 
-    double dspCutoffFreq
-    dspCutoffFreq = chipRegisters->setDspCutoffFreq(10.0)
-    cout << "Actual DSP cutoff frequency: " << dspCutoffFreq << " Hz" << endl
+print ("uploading commands")
+board.uploadCommandList(commandList, rhd2k.constants.AuxCmd2, 0)
+board.selectAuxCommandLength(rhd2k.constants.AuxCmd2, 0, commandSequenceLength - 1)
+board.selectAuxCommandBank(rhd2k.constants.PortA, rhd2k.constants.AuxCmd2, 0)
 
-    chipRegisters->setLowerBandwidth(1.0)
-    chipRegisters->setUpperBandwidth(7500.0)
+print ("printing commands")
+board.printCommandList(commandList)
 
-    commandSequenceLength = chipRegisters->createCommandListRegisterConfig(commandList, false)
-    // Upload version with no ADC calibration to AuxCmd3 RAM Bank 0.
-    b.uploadCommandList(commandList, Rhd2000EvalBoard::AuxCmd3, 0)
+print ("setting amplifier bw paramenters")
+dspCutoffFreq = chipRegisters.setDspCutoffFreq(10.0)
+print ("Actual DSP cutoff frequency: ", dspCutoffFreq, " Hz")
 
-    chipRegisters->createCommandListRegisterConfig(commandList, true)
-    // Upload version with ADC calibration to AuxCmd3 RAM Bank 1.
-    b.uploadCommandList(commandList, Rhd2000EvalBoard::AuxCmd3, 1)
+print ("now really setting amplifier bw paramenters")
+chipRegisters.setLowerBandwidth(1.0)
+chipRegisters.setUpperBandwidth(7500.0)
 
-    b.selectAuxCommandLength(Rhd2000EvalBoard::AuxCmd3, 0, commandSequenceLength - 1)
-    // Select RAM Bank 1 for AuxCmd3 initially, so the ADC is calibrated.
-    b.selectAuxCommandBank(Rhd2000EvalBoard::PortA, Rhd2000EvalBoard::AuxCmd3, 1)
-    // b.printCommandList(commandList) // optionally, print command list
+print ("creating sequences for register rw and ADC calibration")
+commandSequenceLength = chipRegisters.createCommandListRegisterConfig(commandList, False)
 
-"""
+print ("uploading version without ADC calibration")
+board.uploadCommandList(commandList, rhd2k.constants.AuxCmd3, 0)
+
+print ("creating sequences for register rw and ADC calibration")
+chipRegisters.createCommandListRegisterConfig(commandList, True)
+
+print ("uploading version with ADC calibration")
+board.uploadCommandList(commandList, rhd2k.constants.AuxCmd3, 1)
+board.selectAuxCommandLength(rhd2k.constants.AuxCmd3, 0, commandSequenceLength - 1)
+board.selectAuxCommandBank(rhd2k.constants.PortA, rhd2k.constants.AuxCmd3, 1)
+
+print ("printing commands")
+board.printCommandList(commandList)
 
 print ("configuring to run SPI for 60 samples")
-b.setMaxTimeStep(60)
-b.setContinuousRunMode(False)
+board.setMaxTimeStep(60)
+board.setContinuousRunMode(False)
 
 print ("number of 16-bit words in FIFO: ")
-print (b.numWordsInFifo())
+print (board.numWordsInFifo())
 
 print ("starting SPI interface")
-b.run()
+board.run()
 
 print ("waiting for 60 samples")
-while b.isRunning():
+while board.isRunning():
 	pass
 
 print ("number of 16-bit words in FIFO: ")
-print (b.numWordsInFifo())
+print (board.numWordsInFifo())
 
 """
     // Read the resulting single data block from the USB interface.
-    Rhd2000DataBlock *dataBlock = new Rhd2000DataBlock(b.getNumEnabledDataStreams())
-    b.readDataBlock(dataBlock)
+    Rhd2000DataBlock *dataBlock = new Rhd2000DataBlock(board.getNumEnabledDataStreams())
+    board.readDataBlock(dataBlock)
 
     // Display register contents from data stream 0.
     dataBlock->print(0)
 
-    cout << "Number of 16-bit words in FIFO: " << b.numWordsInFifo() << endl
+    cout << "Number of 16-bit words in FIFO: " << board.numWordsInFifo() << endl
 
     // Now that ADC calibration has been performed, we switch to the command sequence
     // that does not execute ADC calibration.
-    b.selectAuxCommandBank(Rhd2000EvalBoard::PortA, Rhd2000EvalBoard::AuxCmd3, 0)
+    board.selectAuxCommandBank(rhd2k.constants.PortA, rhd2k.constants.AuxCmd3, 0)
 
 
     // Grab current time and date for inclusion in filename
@@ -136,33 +136,33 @@ print (b.numWordsInFifo())
     queue<Rhd2000DataBlock> dataQueue
 
     // Run for one second.
-    b.setMaxTimeStep(20000)
+    board.setMaxTimeStep(20000)
     cout << "Reading one second of RHD2000 data..." << endl
-    b.run()
+    board.run()
 
     bool usbDataRead
     do {
-        usbDataRead = b.readDataBlocks(1, dataQueue)
+        usbDataRead = board.readDataBlocks(1, dataQueue)
         if (dataQueue.size() >= 50) {
-            b.queueToFile(dataQueue, saveOut)
+            board.queueToFile(dataQueue, saveOut)
         }
-    } while (usbDataRead || b.isRunning())
+    } while (usbDataRead || board.isRunning())
 
-    b.queueToFile(dataQueue, saveOut)
+    board.queueToFile(dataQueue, saveOut)
 
-    b.flush()
+    board.flush()
 
     saveOut.close()
 
     cout << "Done!" << endl << endl
 
     // Optionally, set board to run continuously so we can observe SPI waveforms.
-    // b.setContinuousRunMode(true)
-    // b.run()
+    // board.setContinuousRunMode(true)
+    // board.run()
 
     // Turn off LED.
     ledArray[0] = 0
-    b.setLedDisplay(ledArray)
+    board.setLedDisplay(ledArray)
 
     // return a.exec()  // used for Qt applications
 }

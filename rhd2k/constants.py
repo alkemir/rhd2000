@@ -45,3 +45,19 @@ PortC1Ddr = 12
 PortC2Ddr = 13
 PortD1Ddr = 14
 PortD2Ddr = 15
+
+#ZcheckCs
+ZcheckCs100fF = 0
+ZcheckCs1pF = 1
+ZcheckCs10pF = 2
+
+#ZcheckPolarity
+ZcheckPositiveInput = 0
+ZcheckNegativeInput = 1
+
+#Rhd2000CommandType
+Rhd2000CommandConvert = 0
+Rhd2000CommandCalibrate = 1
+Rhd2000CommandCalClear = 2
+Rhd2000CommandRegWrite = 3
+Rhd2000CommandRegRead = 4

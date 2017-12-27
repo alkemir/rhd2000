@@ -85,9 +85,9 @@ class EvalBoard:
 	rhd2klib.isRunning.argtypes = [ctypes.c_void_p]
 	rhd2klib.numWordsInFifo.restype = ctypes.c_uint
 	rhd2klib.numWordsInFifo.argtypes = [ctypes.c_void_p]
-	rhd2klib.fifoCapacityInWords.restype = None
-	rhd2klib.fifoCapacityInWords.argtypes = [ctypes.c_void_p]
-	    static unsigned int (Rhd2000EvalBoard* b){ return b->fifoCapacityInWords(); }
+#	rhd2klib.fifoCapacityInWords.restype = None
+#	rhd2klib.fifoCapacityInWords.argtypes = [ctypes.c_void_p]
+#	    static unsigned int (Rhd2000EvalBoard* b){ return b->fifoCapacityInWords(); }
 
 	rhd2klib.setCableDelay.restype = None
 	rhd2klib.setCableDelay.argtypes = [ctypes.c_void_p, ctypes.c_uint, ctypes.c_int]
@@ -146,17 +146,11 @@ class EvalBoard:
 	rhd2klib.flush.restype = None
 	rhd2klib.flush.argtypes = [ctypes.c_void_p]
 	rhd2klib.readDataBlock.restype = ctypes.c_bool
-	rhd2klib.readDataBlock.argtypes = [ctypes.c_void_p]
-	(Rhd2000EvalBoard* b, Rhd2000DataBlock *dataBlock)
-
+	rhd2klib.readDataBlock.argtypes = [ctypes.c_void_p, ctypes.c_void_p]
 	rhd2klib.readDataBlocks.restype = ctypes.c_bool
-	rhd2klib.readDataBlocks.argtypes = [ctypes.c_void_p]
-	(Rhd2000EvalBoard* b, int numBlocks, queue<Rhd2000DataBlock> &dataQueue)
-
+	rhd2klib.readDataBlocks.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_void_p]
 	rhd2klib.queueToFile.restype = ctypes.c_int
-	rhd2klib.queueToFile.argtypes = [ctypes.c_void_p]
-	(Rhd2000EvalBoard* b, queue<Rhd2000DataBlock> &dataQueue, std::ofstream &saveOut)
-
+	rhd2klib.queueToFile.argtypes = [ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p]
 	rhd2klib.getBoardMode.restype = ctypes.c_int
 	rhd2klib.getBoardMode.argtypes = [ctypes.c_void_p]
 	rhd2klib.getCableDelayPort.restype = ctypes.c_int
@@ -188,65 +182,152 @@ class EvalBoard:
 	def uploadCommandList(self, commandList, auxCommandSlot, bank):
 		rhd2klib.uploadCommandList(self.pointer, commandList, auxCommandSlot, bank)
 
+	def printCommandList(self, commandList):
+		rhd2klib.printCommandList(self.pointer, commandList) 
+
+	def selectAuxCommandBank(self, port, auxCommandSlot, bank):
+		rhd2klib.selectAuxCommandBank(self.pointer, port, auxCommandSlot, bank)
+
+	def selectAuxCommandLength(self, auxCommandSlot, loopIndex, endIndex):
+		rhd2klib.selectAuxCommandLength(self.pointer, auxCommandSlot, loopIndex, endIndex)
+
+	def resetBoard(self):
+		rhd2klib.resetBoard(self.pointer)
+
+	def setContinuousRunMode(self, continuousMode):
+		rhd2klib.setContinuousRunMode(self.pointer, continuousMode)
+
+	def setMaxTimeStep(self, maxTimeStep):
+		rhd2klib.setMaxTimeStep(self.pointer, maxTimeStep)
+
+	def run(self):
+		rhd2klib.run(self.pointer)
+
+	def isRunning(self):
+		return rhd2klib.isRunning(self.pointer)
+
+	def numWordsInFifo(self):
+		return numWordsInFifo(self.pointer)
+
+#	def STATIC fifoCapacityInWords
+#    static unsigned int fifoCapacityInWords(Rhd2000EvalBoard* b){ return b->fifoCapacityInWords(); }
+# 	    static unsigned int (Rhd2000EvalBoard* b){ return b->fifoCapacityInWords(); }
+
+	def setCableDelay(self, port, delay):
+		rhd2klib.setCableDelay(self.pointer, port, delay)
+
+	def setCableLengthMeters(self, port, lengthInMeters):
+		rhd2klib.setCableLengthMeters(self.pointer, port, lengthInMeters)
+
+	def setCableLengthFeet(self, port, lengthInFeet):
+		rhd2klib.setCableLengthFeet(self.pointer, port, lengthInFeet)
+
+	def estimateCableLengthMeters(self, delay):
+		return rhd2klib.estimateCableLengthMeters(self.pointer, delay)
+
+	def estimateCableLengthFeet(self, delay):
+		return rhd2klib.estimateCableLengthFeet(self.pointer, delay)
+
+	def setDspSettle(self, enabled):
+		rhd2klib.setDspSettle(self.pointer, enabled)
+
+	def setDataSource(self, stream, dataSource):
+		rhd2klib.setDataSource(self.pointer, stream, dataSource)
+
+	def enableDataStream(self, stream, enabled):
+		rhd2klib.enableDataStream(self.pointer, stream, enabled)
+
+	def getNumEnabledDataStreams(self):
+		return rhd2klib.getNumEnabledDataStreams(self.pointer)
+
+	def clearTtlOut(self):
+		rhd2klib.clearTtlOut(self.pointer)
+
+	def setTtlOut(self, ttlOutArray):
+		rhd2klib.setTtlOut(self.pointer, ttlOutArray)
+
+	def getTtlIn(self):
+		rhd2klib.getTtlIn(self.pointer, ttlInArray)
+
+	def setDacManual(self, value):
+		rhd2klib.setDacManual(self.pointer, value)
+
+	def setLedDisplay(self, ledArray):
+		rhd2klib.setLedDisplay(self.pointer, ledArray)
+
+	def enableDac(self, dacChannel, enabled):
+		rhd2klib.enableDac(self.pointer, dacChannel, enabled)
+
+	def setDacGain(self, gain):
+		rhd2klib.setDacGain(self.pointer, gain)
+
+	def setAudioNoiseSuppress(self, noiseSuppress):
+		rhd2klib.setAudioNoiseSuppress(self.pointer, noiseSuppress)
+
+	def selectDacDataStream(self, dacChannel, stream):
+		rhd2klib.selectDacDataStream(self.pointer, dacChannel, stream)
+
+	def selectDacDataChannel(self, dacChannel, dataChannel):
+		rhd2klib.selectDacDataChannel(self.pointer, dacChannel, dataChannel)
+
+	def enableExternalFastSettle(self, enable):
+		rhd2klib.enableExternalFastSettle(self.pointer, enable)
+
+	def setExternalFastSettleChannel(self, channel):
+		rhd2klib.setExternalFastSettleChannel(self.pointer, channel)
+
+	def enableExternalDigOut(self, port, enable):
+		rhd2klib.enableExternalDigOut(self.pointer, port, enable)
+
+	def setExternalDigOutChannel(self, port, channel):
+		rhd2klib.setExternalDigOutChannel(self.pointer, port, channel)
+
+	def enableDacHighpassFilter(self, enable):
+		rhd2klib.enableDacHighpassFilter(self.pointer, enable)
+
+	def setDacHighpassFilter(self, cutoff):
+		rhd2klib.setDacHighpassFilter(self.pointer, cutoff)
+
+	def setDacThreshold(self, dacChannel, threshold, trigPolarity):
+		rhd2klib.setDacThreshold(self.pointer, dacChannel, threshold, trigPolarity)
+
+	def setTtlMode(self, mode):
+		rhd2klib.setTtlMode(self.pointer, mode)
+
+	def flush(self):
+		rhd2klib.flush(self.pointer)
+
+	def readDataBlock(self, dataBlock):
+		return rhd2klib.readDataBlock(self.pointer, dataBlock)
+
+	def readDataBlocks(self, numBlocks, dataQueue):
+		return rhd2klib.readDataBlocks(self.pointer, numBlocks, dataQueue)
+
+	def queueToFile(self, dataQueue, saveOut):
+		return rhd2klib.queueToFile(self.pointer, dataQueue, saveOut)
+
+	def getBoardMode(self):
+		return rhd2klib.getBoardMode(self.pointer)
+
+	def getCableDelayPort(self, port):
+		return rhd2klib.getCableDelay(self.pointer, port)
+
+	def getCableDelays(self, delays):
+		rhd2klib.getCableDelays(self.pointer, delays)
+
 #(ctypes.c_int * len(pyarr))(*pyarr)
-"""
-    void printCommandList(Rhd2000EvalBoard* b,  vector<int> &commandList){;}
-    void selectAuxCommandBank(Rhd2000EvalBoard* b, Rhd2000EvalBoard::BoardPort port, Rhd2000EvalBoard::AuxCmdSlot auxCommandSlot, int bank){;}
-    void selectAuxCommandLength(Rhd2000EvalBoard* b, Rhd2000EvalBoard::AuxCmdSlot auxCommandSlot, int loopIndex, int endIndex){;}
-    void resetBoard(Rhd2000EvalBoard* b){ b->resetBoard(); }
-    void setContinuousRunMode(Rhd2000EvalBoard* b, bool continuousMode){ b->setContinuousRunMode(continuousMode); }
-    void setMaxTimeStep(Rhd2000EvalBoard* b, unsigned int maxTimeStep){ b->setMaxTimeStep(maxTimeStep); }
-    void run(Rhd2000EvalBoard* b){ b->run(); }
-    bool isRunning(Rhd2000EvalBoard* b){ return b->isRunning(); }
-    unsigned int numWordsInFifo(Rhd2000EvalBoard* b){ return b->numWordsInFifo(); }
-    static unsigned int fifoCapacityInWords(Rhd2000EvalBoard* b){ return b->fifoCapacityInWords(); }
-    void setCableDelay(Rhd2000EvalBoard* b, Rhd2000EvalBoard::BoardPort port, int delay){ b->setCableDelay(port, delay); }
-    void setCableLengthMeters(Rhd2000EvalBoard* b, Rhd2000EvalBoard::BoardPort port, double lengthInMeters){ b->setCableLengthMeters(port, lengthInMeters); }
-    void setCableLengthFeet(Rhd2000EvalBoard* b, Rhd2000EvalBoard::BoardPort port, double lengthInFeet){ b->setCableLengthFeet(port, lengthInFeet); }
-    double estimateCableLengthMeters(Rhd2000EvalBoard* b, int delay){ return b->estimateCableLengthMeters(delay); }
-    double estimateCableLengthFeet(Rhd2000EvalBoard* b, int delay){ return b->estimateCableLengthFeet(delay); }
-    void setDspSettle(Rhd2000EvalBoard* b, bool enabled){ b->setDspSettle(enabled); }
-    void setDataSource(Rhd2000EvalBoard* b, int stream, Rhd2000EvalBoard::BoardDataSource dataSource){ b->setDataSource(stream, dataSource); }
-    void enableDataStream(Rhd2000EvalBoard* b, int stream, bool enabled){ b->enableDataStream(stream, enabled); }
-    int getNumEnabledDataStreams(Rhd2000EvalBoard* b){ return b->getNumEnabledDataStreams(); }
-    void clearTtlOut(Rhd2000EvalBoard* b){ b->clearTtlOut(); }
-    void setTtlOut(Rhd2000EvalBoard* b, int ttlOutArray[]){ b->setTtlOut(ttlOutArray); }
-    void getTtlIn(Rhd2000EvalBoard* b, int ttlInArray[]){ b->getTtlIn(ttlInArray); }
-    void setDacManual(Rhd2000EvalBoard* b, int value){ b->setDacManual(value); }
-    void setLedDisplay(Rhd2000EvalBoard* b, int ledArray[]){ b->setLedDisplay(ledArray); }
-    void enableDac(Rhd2000EvalBoard* b, int dacChannel, bool enabled){ b->enableDac(dacChannel, enabled); }
-    void setDacGain(Rhd2000EvalBoard* b, int gain){ b->setDacGain(gain); }
-    void setAudioNoiseSuppress(Rhd2000EvalBoard* b, int noiseSuppress){ b->setAudioNoiseSuppress(noiseSuppress); }
-    void selectDacDataStream(Rhd2000EvalBoard* b, int dacChannel, int stream){ b->selectDacDataStream(dacChannel, stream); }
-    void selectDacDataChannel(Rhd2000EvalBoard* b, int dacChannel, int dataChannel){ b->selectDacDataChannel(dacChannel, dataChannel); }
-    void enableExternalFastSettle(Rhd2000EvalBoard* b, bool enable){ b->enableExternalFastSettle(enable); }
-    void setExternalFastSettleChannel(Rhd2000EvalBoard* b, int channel){ b->setExternalFastSettleChannel(channel); }
-    void enableExternalDigOut(Rhd2000EvalBoard* b, Rhd2000EvalBoard::BoardPort port, bool enable){ b->enableExternalDigOut(port, enable); }
-    void setExternalDigOutChannel(Rhd2000EvalBoard* b, Rhd2000EvalBoard::BoardPort port, int channel){ b->setExternalDigOutChannel(port, channel); }
-    void enableDacHighpassFilter(Rhd2000EvalBoard* b, bool enable){ b->enableDacHighpassFilter(enable); }
-    void setDacHighpassFilter(Rhd2000EvalBoard* b, double cutoff){ b->setDacHighpassFilter(cutoff); }
-    void setDacThreshold(Rhd2000EvalBoard* b, int dacChannel, int threshold, bool trigPolarity){ b->setDacThreshold(dacChannel, threshold, trigPolarity); }
-    void setTtlMode(Rhd2000EvalBoard* b, int mode){ b->setTtlMode(mode); }
-    void flush(Rhd2000EvalBoard* b){ b->flush(); }
-    bool readDataBlock(Rhd2000EvalBoard* b, Rhd2000DataBlock *dataBlock){ return b->readDataBlock(dataBlock); }
-    bool readDataBlocks(Rhd2000EvalBoard* b, int numBlocks, queue<Rhd2000DataBlock> &dataQueue){ return b->readDataBlocks(numBlocks, dataQueue); }
-    int queueToFile(Rhd2000EvalBoard* b, queue<Rhd2000DataBlock> &dataQueue, std::ofstream &saveOut){ return b->queueToFile(dataQueue, saveOut); }
-    int getBoardMode(Rhd2000EvalBoard* b){ return b->getBoardMode(); }
-    int getCableDelayPort(Rhd2000EvalBoard* b, Rhd2000EvalBoard::BoardPort port){ return b->getCableDelay(port); }
-    void getCableDelays(Rhd2000EvalBoard* b, vector<int> &delays){ b->getCableDelay(delays); }
-"""
 
 class Vector(object):
-    rhd2klib.new_vector_int.restype = c_void_p
-    rhd2klib.new_vector_int.argtypes = []
-    rhd2klib.delete_vector_int.restype = None
-    rhd2klib.delete_vector_int.argtypes = [c_void_p]
-    rhd2klib.vector_int_size.restype = c_int
-    rhd2klib.vector_int_size.argtypes = [c_void_p]
-    rhd2klib.vector_int_get.restype = c_int
-    rhd2klib.vector_int_get.argtypes = [c_void_p, c_int]
+    rhd2klib.new_int_vector.restype = ctypes.c_void_p
+    rhd2klib.new_int_vector.argtypes = []
+    rhd2klib.delete_int_vector.restype = None
+    rhd2klib.delete_int_vector.argtypes = [ctypes.c_void_p]
+    rhd2klib.vector_int_size.restype = ctypes.c_int
+    rhd2klib.vector_int_size.argtypes = [ctypes.c_void_p]
+    rhd2klib.vector_int_get.restype = ctypes.c_int
+    rhd2klib.vector_int_get.argtypes = [ctypes.c_void_p, ctypes.c_int]
     rhd2klib.vector_int_push_back.restype = None
-    rhd2klib.vector_int_push_back.argtypes = [c_void_p, c_int]
+    rhd2klib.vector_int_push_back.argtypes = [ctypes.c_void_p, ctypes.c_int]
 
     def __init__(self):
         self.pointer = rhd2klib.new_vector_int()
@@ -269,16 +350,63 @@ class Vector(object):
         rhd2klib.vector_push_back(self.vector, ctypes.c_int(i))
 
 
-
+print ("creating board")
 b = EvalBoard()
 
-print (b.pointer)
-print ("Opening")
+print ("opening board")
 b.open()
 
-print (b.pointer)
-print ("Uploading main.bit")
+print ("uploading main.bit")
 b.uploadFpgaBitfile(b'main.bit')
 
-print ("Initializing")
+print ("initializing")
 b.initialize()
+
+print ("setting data source")
+b.setDataSource(0, PortA1)
+
+print ("setting sample rate")
+b.setSampleRate(SampleRate20000Hz)
+
+print ("setting MISO sampling delay to 3-feet cable")
+b.setCableLengthFeet(PortA, 3.0)
+
+print ("turn one LED on")
+b.setLedDisplay([1, 0, 0, 0, 0, 0, 0, 0])
+
+print ("setup register to optimize MUX-related settings")
+#    Rhd2000Registers *chipRegisters;
+#    chipRegisters = new Rhd2000Registers(evalBoard->getSampleRate());
+
+print ("creating command list")
+#    int commandSequenceLength;
+#    vector<int> commandList;
+
+"""
+    // First, let's create a command list for the AuxCmd1 slot.  This command
+    // sequence will create a 1 kHz, full-scale sine wave for impedance testing.
+    commandSequenceLength = chipRegisters->createCommandListZcheckDac(commandList, 1000.0, 128.0); // 1000.0, 128.0
+    evalBoard->uploadCommandList(commandList, Rhd2000EvalBoard::AuxCmd1, 0);
+    evalBoard->selectAuxCommandLength(Rhd2000EvalBoard::AuxCmd1, 0, commandSequenceLength - 1);
+    evalBoard->selectAuxCommandBank(Rhd2000EvalBoard::PortA, Rhd2000EvalBoard::AuxCmd1, 0);
+    // evalBoard->printCommandList(commandList); // optionally, print command list
+
+    // Next, we'll create a command list for the AuxCmd2 slot.  This command sequence
+    // will sample the temperature sensor and other auxiliary ADC inputs.
+    commandSequenceLength = chipRegisters->createCommandListTempSensor(commandList);
+    evalBoard->uploadCommandList(commandList, Rhd2000EvalBoard::AuxCmd2, 0);
+    evalBoard->selectAuxCommandLength(Rhd2000EvalBoard::AuxCmd2, 0, commandSequenceLength - 1);
+    evalBoard->selectAuxCommandBank(Rhd2000EvalBoard::PortA, Rhd2000EvalBoard::AuxCmd2, 0);
+    // evalBoard->printCommandList(commandList); // optionally, print command list
+
+    // For the AuxCmd3 slot, we will create two command sequences.  Both sequences
+    // will configure and read back the RHD2000 chip registers, but one sequence will
+    // also run ADC calibration.
+
+    // Before generating register configuration command sequences, set amplifier
+    // bandwidth paramters.
+
+    double dspCutoffFreq;
+    dspCutoffFreq = chipRegisters->setDspCutoffFreq(10.0);
+    cout << "Actual DSP cutoff frequency: " << dspCutoffFreq << " Hz" << endl;
+"""

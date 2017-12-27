@@ -107,3 +107,13 @@ extern "C" {
     int createRhd2000Command1(Rhd2000Registers* r, Rhd2000Registers::Rhd2000CommandType commandType, int arg1){ return r->createRhd2000Command(commandType, arg1); }
     int createRhd2000Command2(Rhd2000Registers* r, Rhd2000Registers::Rhd2000CommandType commandType, int arg1, int arg2){ return r->createRhd2000Command(commandType, arg1, arg2); }
 }
+
+extern "C" {
+  Rhd2000DataBlock* newBlock(int numDataStreams){ return new Rhd2000DataBlock(numDataStreams); }
+  unsigned int calculateDataBlockSizeInWords(int numDataStreams){ return Rhd2000DataBlock::calculateDataBlockSizeInWords(numDataStreams); }
+  unsigned int getSamplesPerDataBlock(){ return Rhd2000DataBlock::getSamplesPerDataBlock(); }
+  void fillFromUsbBuffer(Rhd2000DataBlock* d, unsigned char usbBuffer[], int blockIndex, int numDataStreams){ d->fillFromUsbBuffer(usbBuffer, blockIndex, numDataStreams); }
+  void print(Rhd2000DataBlock* d, int stream){ d->print(stream); }
+  void write(Rhd2000DataBlock* d, ofstream &saveOut, int numDataStreams){ d->write(saveOut, numDataStreams); }
+  bool checkUsbHeader(Rhd2000DataBlock* d, unsigned char usbBuffer[], int index){ return d->checkUsbHeader(usbBuffer, index); }
+}

@@ -1,3 +1,4 @@
+from datetime import datetime, strftime
 import rhd2k
 
 print ("creating board")
@@ -95,40 +96,29 @@ while board.isRunning():
 print ("number of 16-bit words in FIFO: ")
 print (board.numWordsInFifo())
 
+print ("creating data block")
+dataBlock = rhd2k.datablocks.DataBlock(board.getNumEnabledDataStreams())
+
+print ("reading data block")
+board.readDataBlock(dataBlock)
+
+print ("printing data")
+dataBlock.print(0)
+
+print ("number of 16-bit words in FIFO: ")
+print (board.numWordsInFifo())
+
+print ("executing command without ADC calibration")
+board.selectAuxCommandBank(rhd2k.constants.PortA, rhd2k.constants.AuxCmd3, 0)
+
+print ("getting current date time")
+now = strftime("%Y-%m-%d %H:%M:%S", datetime.now())
+
+print ("setting filename")
+filename = "./test_" + now + ".dat"
+print(filename)
+
 """
-    // Read the resulting single data block from the USB interface.
-    Rhd2000DataBlock *dataBlock = new Rhd2000DataBlock(board.getNumEnabledDataStreams())
-    board.readDataBlock(dataBlock)
-
-    // Display register contents from data stream 0.
-    dataBlock->print(0)
-
-    cout << "Number of 16-bit words in FIFO: " << board.numWordsInFifo() << endl
-
-    // Now that ADC calibration has been performed, we switch to the command sequence
-    // that does not execute ADC calibration.
-    board.selectAuxCommandBank(rhd2k.constants.PortA, rhd2k.constants.AuxCmd3, 0)
-
-
-    // Grab current time and date for inclusion in filename
-    char timeDateBuf[80]
-    time_t now = time(0)
-    struct tm tstruct
-    tstruct = *localtime(&now)
-
-    // Construct filename
-    string fileName
-    fileName = "C:\\"  // add your desired path here
-    fileName += "test_"
-    strftime(timeDateBuf, sizeof(timeDateBuf), "%y%m%d", &tstruct)
-    fileName += timeDateBuf
-    fileName += "_"
-    strftime(timeDateBuf, sizeof(timeDateBuf), "%H%M%S", &tstruct)
-    fileName += timeDateBuf
-    fileName += ".dat"
-
-    cout << endl << "Save filename:" << endl << "  " << fileName << endl << endl
-
     // Let's save one second of data to a binary file on disk.
     ofstream saveOut
     saveOut.open(fileName, ios::binary | ios::out)
@@ -154,17 +144,12 @@ print (board.numWordsInFifo())
 
     saveOut.close()
 
-    cout << "Done!" << endl << endl
-
     // Optionally, set board to run continuously so we can observe SPI waveforms.
     // board.setContinuousRunMode(true)
     // board.run()
 
-    // Turn off LED.
-    ledArray[0] = 0
-    board.setLedDisplay(ledArray)
-
-    // return a.exec()  // used for Qt applications
-}
-
 """
+print ("done!")
+
+print ("turning LED off")
+board.setLedDisplay([1, 0, 0, 0, 0, 0, 0, 0])

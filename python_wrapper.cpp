@@ -75,6 +75,11 @@ extern "C" {
 }
 
 extern "C" {
+    queue<Rhd2000DataBlock>* new_data_queue(){ return new queue<Rhd2000DataBlock>; }
+    void delete_data_queue(queue<Rhd2000DataBlock>* q) {delete q;}
+}
+
+extern "C" {
     ofstream* new_ofstream() { return new ofstream; }
     void openFile(ofstream* out, char* filename) { out->open(string(filename), ios::binary | ios::out); }
     void closeFile(ofstream* out) { out->close(); }

@@ -1,5 +1,4 @@
 from datetime import datetime
-from time import strftime
 import rhd2k
 
 print ("creating board")
@@ -113,17 +112,17 @@ print ("executing command without ADC calibration")
 board.selectAuxCommandBank(rhd2k.constants.PortA, rhd2k.constants.AuxCmd3, 0)
 
 print ("getting current date time")
-now = strftime("%Y-%m-%d %H:%M:%S", datetime.now())
+now =  datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
 
 print ("setting filename")
 filename = "./test_" + now + ".dat"
 print(filename)
 
-"""
-    // Let's save one second of data to a binary file on disk.
-    ofstream saveOut
-    saveOut.open(fileName, ios::binary | ios::out)
+print ("openning file for writting")
+saveOut = rhd2k.ofstream.Ofstream()
+saveOut.open(filename)
 
+"""
     queue<Rhd2000DataBlock> dataQueue
 
     // Run for one second.
@@ -141,10 +140,15 @@ print(filename)
 
     board.queueToFile(dataQueue, saveOut)
 
-    board.flush()
 
-    saveOut.close()
+"""
+print ("flushing board")
+board.flush()
 
+print ("closing file")
+saveOut.close()
+
+"""
     // Optionally, set board to run continuously so we can observe SPI waveforms.
     // board.setContinuousRunMode(true)
     // board.run()

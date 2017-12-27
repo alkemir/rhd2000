@@ -13,7 +13,7 @@ using namespace std;
 
 extern "C" {
     Rhd2000EvalBoard* newBoard(){ return new Rhd2000EvalBoard(); }
-    int open(Rhd2000EvalBoard* b){ return b->open(); }
+    int openBoard(Rhd2000EvalBoard* b){ return b->open(); }
     bool uploadFpgaBitfile(Rhd2000EvalBoard* b, char* filename){ return b->uploadFpgaBitfile(string(filename)); }
     void initialize(Rhd2000EvalBoard* b){ b->initialize(); }
     bool setSampleRate(Rhd2000EvalBoard* b, Rhd2000EvalBoard::AmplifierSampleRate newSampleRate){ return b->setSampleRate(newSampleRate); }
@@ -72,6 +72,12 @@ extern "C" {
     int vector_int_size(vector<int>* v){ return v->size(); }
     int vector_int_get(vector<int>* v, int i){ return v->at(i); }
     void vector_int_push_back(vector<int>* v, int i){ v->push_back(i); }
+}
+
+extern "C" {
+    ofstream* new_ofstream() { return new ofstream; }
+    void openFile(ofstream* out, char* filename) { out->open(string(filename), ios::binary | ios::out); }
+    void closeFile(ofstream* out) { out->close(); }
 }
 
 extern "C" {

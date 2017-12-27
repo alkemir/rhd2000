@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
     evalBoard->uploadCommandList(commandList, Rhd2000EvalBoard::AuxCmd1, 0);
     evalBoard->selectAuxCommandLength(Rhd2000EvalBoard::AuxCmd1, 0, commandSequenceLength - 1);
     evalBoard->selectAuxCommandBank(Rhd2000EvalBoard::PortA, Rhd2000EvalBoard::AuxCmd1, 0);
-    // evalBoard->printCommandList(commandList); // optionally, print command list
+    evalBoard->printCommandList(commandList); // optionally, print command list
 
     // Next, we'll create a command list for the AuxCmd2 slot.  This command sequence
     // will sample the temperature sensor and other auxiliary ADC inputs.
@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
     evalBoard->uploadCommandList(commandList, Rhd2000EvalBoard::AuxCmd2, 0);
     evalBoard->selectAuxCommandLength(Rhd2000EvalBoard::AuxCmd2, 0, commandSequenceLength - 1);
     evalBoard->selectAuxCommandBank(Rhd2000EvalBoard::PortA, Rhd2000EvalBoard::AuxCmd2, 0);
-    // evalBoard->printCommandList(commandList); // optionally, print command list
+    evalBoard->printCommandList(commandList); // optionally, print command list
 
     // For the AuxCmd3 slot, we will create two command sequences.  Both sequences
     // will configure and read back the RHD2000 chip registers, but one sequence will
@@ -110,7 +110,7 @@ int main(int argc, char *argv[])
     evalBoard->selectAuxCommandLength(Rhd2000EvalBoard::AuxCmd3, 0, commandSequenceLength - 1);
     // Select RAM Bank 1 for AuxCmd3 initially, so the ADC is calibrated.
     evalBoard->selectAuxCommandBank(Rhd2000EvalBoard::PortA, Rhd2000EvalBoard::AuxCmd3, 1);
-    // evalBoard->printCommandList(commandList); // optionally, print command list
+    evalBoard->printCommandList(commandList); // optionally, print command list
 
     // Since our longest command sequence is 60 commands, let’s just run the SPI
     // interface for 60 samples.

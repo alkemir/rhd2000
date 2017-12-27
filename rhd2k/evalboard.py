@@ -5,8 +5,8 @@ rhd2klib = ctypes.cdll.LoadLibrary('./librhd2k.so')
 class EvalBoard:
 	rhd2klib.newBoard.restype = ctypes.c_void_p
 	rhd2klib.newBoard.argtypes = []
-	rhd2klib.open.restype = ctypes.c_int
-	rhd2klib.open.argtypes = [ctypes.c_void_p]
+	rhd2klib.openBoard.restype = ctypes.c_int
+	rhd2klib.openBoard.argtypes = [ctypes.c_void_p]
 	rhd2klib.uploadFpgaBitfile.restype = ctypes.c_bool
 	rhd2klib.uploadFpgaBitfile.argtypes = [ctypes.c_void_p, ctypes.c_char_p]
 	rhd2klib.initialize.restype = None
@@ -112,7 +112,7 @@ class EvalBoard:
 		self._as_parameter_ = rhd2klib.newBoard()
 
 	def open(self):
-		return rhd2klib.open(self)
+		return rhd2klib.openBoard(self)
 
 	def uploadFpgaBitfile(self, filename):
 		return rhd2klib.uploadFpgaBitfile(self, filename)

@@ -61,3 +61,6 @@ Rhd2000CommandCalibrate = 1
 Rhd2000CommandCalClear = 2
 Rhd2000CommandRegWrite = 3
 Rhd2000CommandRegRead = 4
+
+#DataBlocks
+samples_per_data_block = 60

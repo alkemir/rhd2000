@@ -78,6 +78,8 @@ extern "C" {
     queue<Rhd2000DataBlock>* new_queue_data(){ return new queue<Rhd2000DataBlock>; }
     void queue_data_delete(queue<Rhd2000DataBlock>* q) {delete q;}
     unsigned int queue_data_size(queue<Rhd2000DataBlock>* q) { return q->size(); }
+    Rhd2000DataBlock* queue_data_front(queue<Rhd2000DataBlock>* q) { return &(q->front()); }
+    void queue_data_pop(queue<Rhd2000DataBlock>* q) { q->pop(); }
 }
 
 extern "C" {
@@ -128,4 +130,5 @@ extern "C" {
   void printData(Rhd2000DataBlock* d, int stream){ d->print(stream); }
   void write(Rhd2000DataBlock* d, ofstream &saveOut, int numDataStreams){ d->write(saveOut, numDataStreams); }
   bool checkUsbHeader(Rhd2000DataBlock* d, unsigned char usbBuffer[], int index){ return d->checkUsbHeader(usbBuffer, index); }
+  int* read(Rhd2000DataBlock* d, int stream, int channel) { return d->read(stream, channel); }
 }

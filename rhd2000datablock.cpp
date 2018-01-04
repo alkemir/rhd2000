@@ -379,3 +379,9 @@ void Rhd2000DataBlock::write(ofstream &saveOut, int numDataStreams) const
         writeWordLittleEndian(saveOut, ttlOut[t]);
     }
 }
+
+// Read contents of data block to a binary output stream (saveOut) in little endian format.
+int* Rhd2000DataBlock::read(int stream, int channel)
+{
+    return &amplifierData[stream][channel][0];
+}

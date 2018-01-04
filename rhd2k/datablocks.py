@@ -17,9 +17,14 @@ class DataBlock:
     rhd2klib.write.argtypes = [ctypes.c_void_p, ctypes.c_void_p, ctypes.c_int]
     rhd2klib.checkUsbHeader.restype = ctypes.c_bool
     rhd2klib.checkUsbHeader.argtypes = [ctypes.c_void_p, ctypes.c_void_p, ctypes.c_int]
+    rhd2klib.read.restype = ctypes.POINTER(ctypes.c_int)
+    rhd2klib.read.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int]
 
-    def __init__(self, numDataStreams):
-        self._as_parameter_ = rhd2klib.newBlock(numDataStreams)
+    def __init__(self, numDataStreams, ptr=None):
+        if ptr == None:
+            self._as_parameter_ = rhd2klib.newBlock(numDataStreams)
+            return
+        self._as_parameter_ = ptr
 
     @staticmethod
     def calculateDataBlockSizeInWords():
@@ -40,3 +45,6 @@ class DataBlock:
 
     def checkUsbHeader(self, usbBuffer, index):
         return rhd2klib.checkUsbHeader(self, usbBuffer, index)
+
+    def read(self, stream, channel):
+        return rhd2klib.read(self, stream, channel)

@@ -2,7 +2,8 @@ import ctypes
 
 rhd2klib = ctypes.cdll.LoadLibrary('./librhd2k.so')
 
-class Vector:
+
+class VectorInt:
     rhd2klib.new_vector_int.restype = ctypes.c_void_p
     rhd2klib.new_vector_int.argtypes = []
     rhd2klib.vector_int_delete.restype = None

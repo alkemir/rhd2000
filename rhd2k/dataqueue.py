@@ -2,6 +2,7 @@ import ctypes
 
 rhd2klib = ctypes.cdll.LoadLibrary('./librhd2k.so')
 
+
 class DataQueue:
     rhd2klib.new_queue_data.restype = ctypes.c_void_p
     rhd2klib.new_ofstream.argtypes = []

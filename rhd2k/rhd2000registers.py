@@ -2,7 +2,24 @@ import ctypes
 
 rhd2klib = ctypes.cdll.LoadLibrary('./librhd2k.so')
 
-class Registers:
+
+class Rhd2000Registers:
+    # enum ZcheckCs
+    ZcheckCs100fF = 0
+    ZcheckCs1pF = 1
+    ZcheckCs10pF = 2
+
+    # enum ZcheckPolarity {
+    ZcheckPositiveInput = 0
+    ZcheckNegativeInput = 1
+
+    # enum Rhd2000CommandType {
+    Rhd2000CommandConvert = 0
+    Rhd2000CommandCalibrate = 1
+    Rhd2000CommandCalClear = 2
+    Rhd2000CommandRegWrite = 3
+    Rhd2000CommandRegRead = 4
+
     rhd2klib.newRegisters.restype = ctypes.c_void_p
     rhd2klib.newRegisters.argtypes = [ctypes.c_double]
     rhd2klib.defineSampleRate.restype = None
@@ -40,7 +57,8 @@ class Registers:
     rhd2klib.setZcheckChannel.restype = ctypes.c_int
     rhd2klib.setZcheckChannel.argtypes = [ctypes.c_void_p, ctypes.c_int]
     rhd2klib.setAmpPowered.restype = None
-    rhd2klib.setAmpPowered.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_bool]
+    rhd2klib.setAmpPowered.argtypes = [
+        ctypes.c_void_p, ctypes.c_int, ctypes.c_bool]
     rhd2klib.powerUpAllAmps.restype = None
     rhd2klib.powerUpAllAmps.argtypes = [ctypes.c_void_p]
     rhd2klib.powerDownAllAmps.restype = None
@@ -52,19 +70,25 @@ class Registers:
     rhd2klib.setLowerBandwidth.restype = ctypes.c_double
     rhd2klib.setLowerBandwidth.argtypes = [ctypes.c_void_p, ctypes.c_double]
     rhd2klib.createCommandListRegisterConfig.restype = ctypes.c_int
-    rhd2klib.createCommandListRegisterConfig.argtypes = [ctypes.c_void_p, ctypes.c_void_p, ctypes.c_bool]
+    rhd2klib.createCommandListRegisterConfig.argtypes = [
+        ctypes.c_void_p, ctypes.c_void_p, ctypes.c_bool]
     rhd2klib.createCommandListTempSensor.restype = ctypes.c_int
-    rhd2klib.createCommandListTempSensor.argtypes = [ctypes.c_void_p, ctypes.c_void_p]
+    rhd2klib.createCommandListTempSensor.argtypes = [
+        ctypes.c_void_p, ctypes.c_void_p]
     rhd2klib.createCommandListUpdateDigOut.restype = ctypes.c_int
-    rhd2klib.createCommandListUpdateDigOut.argtypes = [ctypes.c_void_p, ctypes.c_void_p]
+    rhd2klib.createCommandListUpdateDigOut.argtypes = [
+        ctypes.c_void_p, ctypes.c_void_p]
     rhd2klib.createCommandListZcheckDac.restype = ctypes.c_int
-    rhd2klib.createCommandListZcheckDac.argtypes = [ctypes.c_void_p, ctypes.c_void_p, ctypes.c_double, ctypes.c_double]
+    rhd2klib.createCommandListZcheckDac.argtypes = [
+        ctypes.c_void_p, ctypes.c_void_p, ctypes.c_double, ctypes.c_double]
     rhd2klib.createRhd2000Command0.restype = ctypes.c_int
     rhd2klib.createRhd2000Command0.argtypes = [ctypes.c_void_p, ctypes.c_int]
     rhd2klib.createRhd2000Command1.restype = ctypes.c_int
-    rhd2klib.createRhd2000Command1.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int]
+    rhd2klib.createRhd2000Command1.argtypes = [
+        ctypes.c_void_p, ctypes.c_int, ctypes.c_int]
     rhd2klib.createRhd2000Command2.restype = ctypes.c_int
-    rhd2klib.createRhd2000Command2.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int, ctypes.c_int]
+    rhd2klib.createRhd2000Command2.argtypes = [
+        ctypes.c_void_p, ctypes.c_int, ctypes.c_int, ctypes.c_int]
 
     def __init__(self, sampleRate):
         self._as_parameter_ = rhd2klib.newRegisters(sampleRate)
@@ -96,7 +120,7 @@ class Registers:
     def enableDsp(self, enabled):
         rhd2klib.enableDsp(self, enabled)
 
-    #def disableDsp(self):
+    # def disableDsp(self):
     #    rhd2klib.disableDsp(self)
 
     def setDspCutoffFreq(self, newDspCutoffFreq):

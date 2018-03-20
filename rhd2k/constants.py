@@ -1,66 +1,51 @@
-#AmplifierSampleRate
-SampleRate1000Hz = 0
-SampleRate1250Hz = 1
-SampleRate1500Hz = 2
-SampleRate2000Hz = 3
-SampleRate2500Hz = 4
-SampleRate3000Hz = 5
-SampleRate3333Hz = 6
-SampleRate4000Hz = 7
-SampleRate5000Hz = 8
-SampleRate6250Hz = 9
-SampleRate8000Hz = 10
-SampleRate10000Hz = 11
-SampleRate12500Hz = 12
-SampleRate15000Hz = 13
-SampleRate20000Hz = 14
-SampleRate25000Hz = 15
-SampleRate30000Hz = 16
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
 
-#AuxCmdSlot
-AuxCmd1 = 0
-AuxCmd2 = 1
-AuxCmd3 = 2
+# RHD2000 Evaluation Board constants
+MAX_NUM_DATA_STREAMS = 8
+SAMPLES_PER_DATA_BLOCK = 60
 
-#BoardPort
-PortA = 0
-PortB = 1
-PortC = 2
-PortD = 3
+# Special Unicode characters
+QSTRING_MU_SYMBOL = u'\u03BC'
+QSTRING_OMEGA_SYMBOL = u'\u03A9'
+QSTRING_ANGLE_SYMBOL = u'\u2220'
+QSTRING_DEGREE_SYMBOL = u'\u00b0'
+QSTRING_PLUSMINUS_SYMBOL = u'\u00b1'
 
-#BoardDataSource
-PortA1 = 0
-PortA2 = 1
-PortB1 = 2
-PortB2 = 3
-PortC1 = 4
-PortC2 = 5
-PortD1 = 6
-PortD2 = 7
-PortA1Ddr = 8
-PortA2Ddr = 9
-PortB1Ddr = 10
-PortB2Ddr = 11
-PortC1Ddr = 12
-PortC2Ddr = 13
-PortD1Ddr = 14
-PortD2Ddr = 15
+# Saved data file constants
+DATA_FILE_MAGIC_NUMBER = 0xc6912702
+DATA_FILE_MAIN_VERSION_NUMBER = 1
+DATA_FILE_SECONDARY_VERSION_NUMBER = 5
 
-#ZcheckCs
-ZcheckCs100fF = 0
-ZcheckCs1pF = 1
-ZcheckCs10pF = 2
+# Saved settings file constants
+SETTINGS_FILE_MAGIC_NUMBER = 0x45ab12cd
+SETTINGS_FILE_MAIN_VERSION_NUMBER = 1
+SETTINGS_FILE_SECONDARY_VERSION_NUMBER = 5
 
-#ZcheckPolarity
-ZcheckPositiveInput = 0
-ZcheckNegativeInput = 1
+# Trigonometric constants
+RADIANS_TO_DEGREES = 57.2957795132
+DEGREES_TO_RADIANS = 0.0174532925199
 
-#Rhd2000CommandType
-Rhd2000CommandConvert = 0
-Rhd2000CommandCalibrate = 1
-Rhd2000CommandCalClear = 2
-Rhd2000CommandRegWrite = 3
-Rhd2000CommandRegRead = 4
+SPIKEPLOT_X_SIZE = 320
+SPIKEPLOT_Y_SIZE = 346
 
-#DataBlocks
-samples_per_data_block = 60
+# enum SignalType
+AmplifierSignal = 0
+AuxInputSignal = 1
+SupplyVoltageSignal = 2
+BoardAdcSignal = 3
+BoardDigInSignal = 4
+BoardDigOutSignal = 5
+
+# enum SaveFormat
+SaveFormatIntan = 0
+SaveFormatFilePerSignalType = 1
+SaveFormatFilePerChannel = 2
+
+CHIP_ID_RHD2132 = 1
+CHIP_ID_RHD2216 = 2
+CHIP_ID_RHD2164 = 4
+CHIP_ID_RHD2164_B = 1000
+
+REGISTER_59_MISO_A = 53
+REGISTER_59_MISO_B = 58

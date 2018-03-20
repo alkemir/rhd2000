@@ -130,5 +130,7 @@ extern "C" {
   void printData(Rhd2000DataBlock* d, int stream){ d->print(stream); }
   void write(Rhd2000DataBlock* d, ofstream &saveOut, int numDataStreams){ d->write(saveOut, numDataStreams); }
   bool checkUsbHeader(Rhd2000DataBlock* d, unsigned char usbBuffer[], int index){ return d->checkUsbHeader(usbBuffer, index); }
-  int* read(Rhd2000DataBlock* d, int stream, int channel) { return d->read(stream, channel); }
+  int* readAmplifier(Rhd2000DataBlock* d, int stream, int channel) { return d->readAmplifier(stream, channel); }
+  int* readAuxiliary(Rhd2000DataBlock* d, int stream, int channel) { return d->readAuxiliary(stream, channel); }
+  int* readADC(Rhd2000DataBlock* d, int adc) { return d->readADC(adc); }
 }

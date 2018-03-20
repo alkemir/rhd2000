@@ -17,8 +17,12 @@ class DataBlock:
     rhd2klib.write.argtypes = [ctypes.c_void_p, ctypes.c_void_p, ctypes.c_int]
     rhd2klib.checkUsbHeader.restype = ctypes.c_bool
     rhd2klib.checkUsbHeader.argtypes = [ctypes.c_void_p, ctypes.c_void_p, ctypes.c_int]
-    rhd2klib.read.restype = ctypes.POINTER(ctypes.c_int)
-    rhd2klib.read.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int]
+    rhd2klib.readAmplifier.restype = ctypes.POINTER(ctypes.c_int)
+    rhd2klib.readAmplifier.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int]
+    rhd2klib.readAuxiliary.restype = ctypes.POINTER(ctypes.c_int)
+    rhd2klib.readAuxiliary.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int]
+    rhd2klib.readADC.restype = ctypes.POINTER(ctypes.c_int)
+    rhd2klib.readADC.argtypes = [ctypes.c_void_p, ctypes.c_int]
 
     def __init__(self, numDataStreams, ptr=None):
         if ptr == None:
@@ -46,5 +50,11 @@ class DataBlock:
     def checkUsbHeader(self, usbBuffer, index):
         return rhd2klib.checkUsbHeader(self, usbBuffer, index)
 
-    def read(self, stream, channel):
-        return rhd2klib.read(self, stream, channel)
+    def readAmplifier(self, stream, channel):
+        return rhd2klib.readAmplifier(self, stream, channel)
+
+    def readAuxiliary(self, stream, channel):
+        return rhd2klib.readAuxiliary(self, stream, channel)
+
+    def readADC(self, adc):
+        return rhd2klib.readADC(self, adc)

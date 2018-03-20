@@ -45,7 +45,9 @@ public:
     void fillFromUsbBuffer(unsigned char usbBuffer[], int blockIndex, int numDataStreams);
     void print(int stream) const;
     void write(ofstream &saveOut, int numDataStreams) const;
-    int* read(int stream, int channel);
+    int* readAmplifier(int stream, int channel);
+    int* readAuxiliary(int stream, int channel);
+    int* readADC(int adc);
     bool checkUsbHeader(unsigned char usbBuffer[], int index);
 
 private:

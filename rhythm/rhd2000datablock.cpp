@@ -380,8 +380,20 @@ void Rhd2000DataBlock::write(ofstream &saveOut, int numDataStreams) const
     }
 }
 
-// Read contents of data block to a binary output stream (saveOut) in little endian format.
-int* Rhd2000DataBlock::read(int stream, int channel)
+// Read amplifier data of data block
+int* Rhd2000DataBlock::readAmplifier(int stream, int channel)
 {
-    return &amplifierData[stream][channel][0];
+    return &amplifierData[stream][channel][0]; // this works because vectors are contiguous
+}
+
+// Read auxiliary data of data block
+int* Rhd2000DataBlock::readAuxiliary(int stream, int channel)
+{
+    return &auxiliaryData[stream][channel][0]; // this works because vectors are contiguous
+}
+
+// Read amplifier data of data block
+int* Rhd2000DataBlock::readADC(int adc)
+{
+    return &boardAdcData[adc][0]; // this works because vectors are contiguous
 }

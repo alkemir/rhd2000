@@ -1,0 +1,7 @@
+rhythm/obj
+rhd2k/__pycache__
+rhd2k/librhd2k.dll
+rhd2k/okFrontPanel.dll
+rhd2k/librhd2k.so
+rhd2k/libokFrontPanel.dylib
+.vscode

@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-import random
+from numpy import random
 import math
 
 from PyQt5.QtCore import QFile, QIODevice, QDataStream
@@ -1382,7 +1382,7 @@ class SignalProcessor():
                         for t in range(constants.SAMPLES_PER_DATA_BLOCK):
                             # Create realistic background Gaussian noise of 2.4 uVrms (would be more in cortex)
                             self.amplifierPreFilter[stream][channel][constants.SAMPLES_PER_DATA_BLOCK *
-                                                                     block + t] = 2.4 * random.gauss(0, 1)
+                                                                     block + t] = 2.4 * random.normal(0, 1)
                             if spikePresent:
                                 # Create synthetic spike
                                 if t * tStepMsec > spikeDelay and t * tStepMsec < self.synthSpikeDuration[stream][channel][spikeNum] + spikeDelay:

@@ -10,14 +10,14 @@ def initialize():
     board.uploadFpgaBitfile(b'main.bit')
     board.initialize()
 
-    board.setDataSource(0, constants.PortA1)
-    board.setDataSource(1, constants.PortB1)
+    board.setDataSource(0, Rhd2000EvalBoard.PortA1)
+    board.setDataSource(1, Rhd2000EvalBoard.PortB1)
     for stream in range(2, 8):
     	board.enableDataStream(stream, False)
 
-    board.setSampleRate(constants.SampleRate20000Hz)
-    board.setCableLengthFeet(constants.PortA, 3.0)
-    board.setCableLengthFeet(constants.PortB, 3.0)
+    board.setSampleRate(Rhd2000EvalBoard.SampleRate20000Hz)
+    board.setCableLengthFeet(Rhd2000EvalBoard.PortA, 3.0)
+    board.setCableLengthFeet(Rhd2000EvalBoard.PortB, 3.0)
     board.setContinuousRunMode(False)
 
     return board

@@ -10,8 +10,6 @@ the code or extending the GUI are simple tasks.
 To use the ctypes wrapper you don't need any special software, but if you want to use the GUI you need to install
 PyQt5. If you want to be build everything from source, a C and C++ compiling environment is needed.
 
-
-
 # Deploying
 Depending on the operating system the steps and software requirements vary:
 
@@ -26,17 +24,18 @@ or compile them yourself.
 
 Particularly, to compile the shared library in Mac invoke:
 
-g++ -c -fPIC python_wrapper.cpp -o librhd2k.o
-g++ -shared -o librhd2k.so librhd2k.o rhd2000evalboard.cpp okFrontPanelDLL.cpp rhd2000datablock.cpp rhd2000registers.cpp
-
 ## Mac
-(Instructions on how to build the dynamic lib and where to position files)
-
 To use the python wrapper check out sample.py, it follows closely the example provided by Intan.
 To run the GUI just execute main.py
 
 ## Windows
-(Still under work)
+This repository builds under Cygwin. You need to install:
+*make
+*g++
+*python3
+Then just `make` at the root of this repository and this should generate `lib/librhd2k.dll`.
+Finally, copy lib/* into rhd2k.
+
 
 ## Linux
 (Help wanted, I have never tried to get this running on Linux)

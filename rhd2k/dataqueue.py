@@ -1,6 +1,11 @@
 import ctypes
+import platform
+import os
 
-rhd2klib = ctypes.cdll.LoadLibrary('./librhd2k.so')
+libname = '/librhd2k.so'
+if platform.system() == 'Windows' or 'CYGWIN' in platform.system():
+    libname =  '/librhd2k.dll'
+rhd2klib = ctypes.cdll.LoadLibrary(os.path.dirname(__file__) + libname)
 
 
 class DataQueue:

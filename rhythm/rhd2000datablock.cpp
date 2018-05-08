@@ -397,3 +397,15 @@ int* Rhd2000DataBlock::readADC(int adc)
 {
     return &boardAdcData[adc][0]; // this works because vectors are contiguous
 }
+
+// Read TTL IN data of data block
+int* Rhd2000DataBlock::readTTLIn()
+{
+    return &ttlIn[0]; // this works because vectors are contiguous
+}
+
+// Read TTL OUT data of data block
+int* Rhd2000DataBlock::readTTLOut()
+{
+    return &ttlOut[0]; // this works because vectors are contiguous
+}

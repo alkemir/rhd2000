@@ -192,7 +192,7 @@ class Rhd2000EvalBoard:
         return rhd2klib.openBoard(self)
 
     def uploadFpgaBitfile(self, filename):
-        return rhd2klib.uploadFpgaBitfile(self, filename)
+        return rhd2klib.uploadFpgaBitfile(self, bytes(filename, "ascii"))
 
     def initialize(self):
         rhd2klib.initialize(self)

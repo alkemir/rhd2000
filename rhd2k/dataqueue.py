@@ -2,6 +2,8 @@ import ctypes
 import platform
 import os
 
+from rhd2000datablock import Rhd2000DataBlock
+
 libname = '/librhd2k.so'
 if platform.system() == 'Windows' or 'CYGWIN' in platform.system():
     libname =  '/librhd2k.dll'
@@ -30,7 +32,7 @@ class DataQueue:
         return int(rhd2klib.queue_data_size(self))
 
     def front(self):
-        return rhd2klib.queue_data_front(self)
+        return Rhd2000DataBlock(0, ptr=rhd2klib.queue_data_front(self))
 
     def pop(self):
         rhd2klib.queue_data_pop(self)

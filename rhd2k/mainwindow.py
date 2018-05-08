@@ -442,19 +442,19 @@ class MainWindow(QMainWindow):
         self.dacNoiseSuppressSlider.valueChanged.connect(
             self.changeDacNoiseSuppress)
 
-        fifoLagLabel = QLabel("0 ms")
-        fifoLagLabel.setStyleSheet("color: green")
+        self.fifoLagLabel = QLabel("0 ms")
+        self.fifoLagLabel.setStyleSheet("color: green")
 
-        fifoFullLabel = QLabel("(0% full)")
-        fifoFullLabel.setStyleSheet("color: black")
+        self.fifoFullLabel = QLabel("(0% full)")
+        self.fifoFullLabel.setStyleSheet("color: black")
 
         runStopLayout = QHBoxLayout()
         runStopLayout.addWidget(self.runButton)
         runStopLayout.addWidget(self.stopButton)
         runStopLayout.addWidget(QLabel("FIFO lag:"))
         runStopLayout.addStretch(1)
-        runStopLayout.addWidget(fifoLagLabel)
-        runStopLayout.addWidget(fifoFullLabel)
+        runStopLayout.addWidget(self.fifoLagLabel)
+        runStopLayout.addWidget(self.fifoFullLabel)
 
         recordLayout = QHBoxLayout()
         recordLayout.addWidget(self.recordButton)
@@ -2299,6 +2299,7 @@ class MainWindow(QMainWindow):
     def runInterfaceBoard(self):
         timer = QTime()
         bufferQueue = DataQueue()
+        triggerIndex = 0
 
         extraCycles = 0
         timestampOffset = 0
@@ -2435,6 +2436,7 @@ class MainWindow(QMainWindow):
                                                                                                 (self.triggerSet |
                                                                                                  self.triggered), self.recordTriggerChannel,
                                                                                                 triggerPolarity,
+                                                                                                triggerIndex,
                                                                                                 self.triggerSet, bufferQueue,
                                                                                                 self.recording, self.saveStream, self.saveFormat, self.saveTemp,
                                                                                                 self.saveTtlOut, timestampOffset)
@@ -3328,7 +3330,7 @@ class MainWindow(QMainWindow):
                     qApp.processEvents()
 
                 self.evalBoard.readDataBlocks(numBlocks, self.dataQueue)
-                _, triggerIndex = self.signalProcessor.loadAmplifierData(self.dataQueue, numBlocks, False, 0, 0, False, bufferQueue,
+                _, triggerIndex = self.signalProcessor.loadAmplifierData(self.dataQueue, numBlocks, False, 0, 0, triggerIndex, False, bufferQueue,
                                                                          False, self.saveStream, self.saveFormat, False, False, 0)
                 for stream in range(self.evalBoard.getNumEnabledDataStreams()):
                     if self.chipId[stream] != constants.CHIP_ID_RHD2164_B:
@@ -3352,12 +3354,12 @@ class MainWindow(QMainWindow):
                         qApp.processEvents()
 
                     self.evalBoard.readDataBlocks(numBlocks, self.dataQueue)
-                    _, triggerIndex = self.signalProcessor.loadAmplifierData(self.dataQueue, numBlocks, False, 0, 0, False, bufferQueue,
+                    _, triggerIndex = self.signalProcessor.loadAmplifierData(self.dataQueue, numBlocks, False, 0, 0, triggerIndex, False, bufferQueue,
                                                                              False, self.saveStream, self.saveFormat, False, False, 0)
                     for stream in range(self.evalBoard.getNumEnabledDataStreams()):
                         if self.chipId[stream] == constants.CHIP_ID_RHD2164_B:
                             self.signalProcessor.measureComplexAmplitude(measuredMagnitude, measuredPhase,
-                                                                         capRange, stream, channel,  numBlocks, self.boardSampleRate,
+                                                                         capRange, stream, channel, numBlocks, self.boardSampleRate,
                                                                          self.actualImpedanceFreq, numPeriods)
 
                 # Advance LED display

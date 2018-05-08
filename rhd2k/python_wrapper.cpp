@@ -133,4 +133,6 @@ extern "C" {
   int* readAmplifier(Rhd2000DataBlock* d, int stream, int channel) { return d->readAmplifier(stream, channel); }
   int* readAuxiliary(Rhd2000DataBlock* d, int stream, int channel) { return d->readAuxiliary(stream, channel); }
   int* readADC(Rhd2000DataBlock* d, int adc) { return d->readADC(adc); }
+  int* readTTLIn(Rhd2000DataBlock* d) { return d->readTTLIn(); }
+  int* readTTLOut(Rhd2000DataBlock* d) { return d->readTTLOut(); }
 }

@@ -48,6 +48,8 @@ public:
     int* readAmplifier(int stream, int channel);
     int* readAuxiliary(int stream, int channel);
     int* readADC(int adc);
+    int* readTTLIn();
+    int* readTTLOut();
     bool checkUsbHeader(unsigned char usbBuffer[], int index);
 
 private:

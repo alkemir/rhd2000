@@ -33,8 +33,17 @@ class Rhd2000DataBlock:
         ctypes.c_void_p, ctypes.c_int, ctypes.c_int]
     rhd2klib.readADC.restype = ctypes.POINTER(ctypes.c_int)
     rhd2klib.readADC.argtypes = [ctypes.c_void_p, ctypes.c_int]
+    rhd2klib.readTTLIn.restype = ctypes.POINTER(ctypes.c_int)
+    rhd2klib.readTTLIn.argtypes = [ctypes.c_void_p]
+    rhd2klib.readTTLOut.restype = ctypes.POINTER(ctypes.c_int)
+    rhd2klib.readTTLOut.argtypes = [ctypes.c_void_p]
 
     def __init__(self, numDataStreams, ptr=None):
+        self.auxiliaryData = Rhd2000DataBlock.AuxiliaryReaderStream(self)
+        self.amplifierData = Rhd2000DataBlock.AmplifierReaderStream(self)
+        self.boardAdcData = Rhd2000DataBlock.ADCReaderStream(self)
+        self.ttlIn = Rhd2000DataBlock.TTLInReader(self)
+        self.ttlOut = Rhd2000DataBlock.TTLOutReader(self)
         if ptr is None:
             self._as_parameter_ = rhd2klib.newBlock(numDataStreams)
             return
@@ -68,3 +77,54 @@ class Rhd2000DataBlock:
 
     def readADC(self, adc):
         return rhd2klib.readADC(self, adc)
+    
+    def readTTLIn(self):
+        return rhd2klib.readTTLIn(self)
+    
+    def readTTLOut(self):
+        return rhd2klib.readTTLOut(self)
+    
+    class AuxiliaryReaderChannel:
+        def __init__(self, block, stream):
+            self.block = block
+            self.stream = stream
+        def __getitem__(self, channel):
+            return self.block.readAuxiliary(self.stream, channel)
+    
+    class AuxiliaryReaderStream:
+        def __init__(self, block):
+            self.block = block
+        def __getitem__(self, stream):
+            return Rhd2000DataBlock.AuxiliaryReaderChannel(self.block, stream)
+
+    class AmplifierReaderChannel:
+        def __init__(self, block, stream):
+            self.block = block
+            self.stream = stream
+        def __getitem__(self, channel):
+            return self.block.readAmplifier(self.stream, channel)
+    
+    class AmplifierReaderStream:
+        def __init__(self, block):
+            self.block = block
+        def __getitem__(self, stream):
+            return Rhd2000DataBlock.AmplifierReaderChannel(self.block, stream)
+    
+    class ADCReaderStream:
+        def __init__(self, block):
+            self.block = block
+        def __getitem__(self, stream):
+            return self.block.readADC(stream)
+    
+    class TTLInReader:
+        def __init__(self, block):
+            self.block = block
+        def __getitem__(self, idx):
+            return self.block.readTTLIn()[idx]
+
+    class TTLOutReader:
+        def __init__(self, block):
+            self.block = block
+        def __getitem__(self, idx):
+            return self.block.readTTLOut()[idx]
+            

@@ -52,14 +52,14 @@ def queueToArrays(queue):
 
     b = 0
     while len(queue) != 0:
-        block = datablocks.DataBlock(0, ptr=queue.front())
-        blockADCData = block.readADC(7)
+        block = queue.front()
+        blockADCData = block.boardAdcData[7]
         blockStreamA = []
         blockStreamB = []
         for chan in xrange(8, 24):
-            blockStreamA.append(block.readAmplifier(0, chan))
+            blockStreamA.append(block.amplifierData[0][chan])
         for chan in xrange(0, 32):
-            blockStreamB.append(block.readAmplifier(1, chan))
+            blockStreamB.append(block.amplifierData[1][chan])
 
         for sample in xrange(rhd2k.constants.samples_per_data_block):
             idx = b + sample

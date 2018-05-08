@@ -437,7 +437,8 @@ class SignalProcessor():
     # used to reference the trigger point to zero.
     #
     # Returns number of bytes written to binary datastream out if saveToDisk == True.
-    def loadAmplifierData(self, dataQueue, numBlocks, lookForTrigger, triggerChannel, triggerPolarity, addToBuffer, bufferQueue, saveToDisk, out, saveFormat, saveTemp, saveTtlOut, timestampOffset):
+    
+    def loadAmplifierData(self, dataQueue, numBlocks, lookForTrigger, triggerChannel, triggerPolarity, triggerTimeIndex, addToBuffer, bufferQueue, saveToDisk, out, saveFormat, saveTemp, saveTtlOut, timestampOffset):
         indexAmp = 0
         indexAux = 0
         indexSupply = 0

@@ -110,7 +110,7 @@ class SignalGroup():
 
         print("SignalGroup.channelByUserOrder: index " +
               str(index) + " not found.\n")
-        return 0
+        return None
 
     # Returns the total number of channels in this signal group.
     def numChannels(self):

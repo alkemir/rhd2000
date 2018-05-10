@@ -24,6 +24,7 @@ class DataQueue:
 
     def __init__(self):
         self._as_parameter_ = rhd2klib.new_queue_data()
+        self.front_cache = None
 
     def __del__(self):
         rhd2klib.queue_data_delete(self)
@@ -32,7 +33,10 @@ class DataQueue:
         return int(rhd2klib.queue_data_size(self))
 
     def front(self):
-        return Rhd2000DataBlock(0, ptr=rhd2klib.queue_data_front(self))
+        if self.front_cache == None:
+            self.front_cache = Rhd2000DataBlock(0, ptr=rhd2klib.queue_data_front(self))
+        return self.front_cache
 
     def pop(self):
         rhd2klib.queue_data_pop(self)
+        self.front_cache = None

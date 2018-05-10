@@ -439,11 +439,7 @@ class SignalProcessor():
     # Returns number of bytes written to binary datastream out if saveToDisk == True.
     
     def loadAmplifierData(self, dataQueue, numBlocks, lookForTrigger, triggerChannel, triggerPolarity, triggerTimeIndex, addToBuffer, bufferQueue, saveToDisk, out, saveFormat, saveTemp, saveTtlOut, timestampOffset):
-        indexAmp = 0
-        indexAux = 0
         indexSupply = 0
-        indexAdc = 0
-        indexDig = 0
         numWordsWritten = 0
 
         triggerFound = False
@@ -459,41 +455,38 @@ class SignalProcessor():
 
             # Load and scale RHD2000 amplifier waveforms
             # (sampled at amplifier sampling rate)
-            for t in range(constants.SAMPLES_PER_DATA_BLOCK):
+
+            front_ = dataQueue.front()
+            for stream in range(self.numDataStreams):
+                stream_ = front_.amplifierData[stream]
                 for channel in range(32):
-                    for stream in range(self.numDataStreams):
+                    channel_ = stream_[channel]
+                    preFilter_ = self.amplifierPreFilter[stream][channel]
+                    for t in range(constants.SAMPLES_PER_DATA_BLOCK):
                         # Amplifier waveform units = microvolts
-                        self.amplifierPreFilter[stream][channel][indexAmp] = 0.195 * (
-                            dataQueue.front().amplifierData[stream][channel][t] - 32768)
+                        preFilter_[t] = 0.195 * (channel_[t] - 32768)
 
-                indexAmp += 1
-
+            #TODO(br): Note the index on stream_
             # Load and scale RHD2000 auxiliary input waveforms
             # (sampled at 1/4 amplifier sampling rate)
-            for t in range(0, constants.SAMPLES_PER_DATA_BLOCK, 4):
-                for stream in range(self.numDataStreams):
+            front_ = dataQueue.front()
+            for stream in range(self.numDataStreams):
+                stream_ = front_.auxiliaryData[stream]
+                for t in range(0, constants.SAMPLES_PER_DATA_BLOCK, 4):
                     # Auxiliary input waveform units = volts
-                    self.auxChannel[stream][0][indexAux] = 0.0000374 * \
-                        dataQueue.front(
-                    ).auxiliaryData[stream][1][t + 1]
-                    self.auxChannel[stream][1][indexAux] = 0.0000374 * \
-                        dataQueue.front(
-                    ).auxiliaryData[stream][1][t + 2]
-                    self.auxChannel[stream][2][indexAux] = 0.0000374 * \
-                        dataQueue.front(
-                    ).auxiliaryData[stream][1][t + 3]
-
-                indexAux += 1
+                    self.auxChannel[stream][0][t] = 0.0000374 * stream_[1][t + 1]
+                    self.auxChannel[stream][1][t] = 0.0000374 * stream_[1][t + 2]
+                    self.auxChannel[stream][2][t] = 0.0000374 * stream_[1][t + 3]
 
             # Load and scale RHD2000 supply voltage and temperature sensor waveforms
             # (sampled at 1/60 amplifier sampling rate)
+            front_ = dataQueue.front()
             for stream in range(self.numDataStreams):
+                stream_ = front_.auxiliaryData[stream]
                 # Supply voltage waveform units = volts
-                self.supplyVoltage[stream][indexSupply] = 0.0000748 * \
-                    dataQueue.front().auxiliaryData[stream][1][28]
+                self.supplyVoltage[stream][indexSupply] = 0.0000748 * stream_[1][28]
                 # Temperature sensor waveform units = degrees C
-                self.tempRaw[stream] = (dataQueue.front().auxiliaryData[stream][1][20] -
-                                        dataQueue.front().auxiliaryData[stream][1][12]) / 98.9 - 273.15
+                self.tempRaw[stream] = (stream_[1][20] - stream_[1][12]) / 98.9 - 273.15
 
             indexSupply += 1
 
@@ -503,49 +496,57 @@ class SignalProcessor():
 
             # Load and scale USB interface board ADC waveforms
             # (sampled at amplifier sampling rate)
-            for t in range(constants.SAMPLES_PER_DATA_BLOCK):
-                for channel in range(8):
+            front_ = dataQueue.front()
+            for channel in range(8):
+                channel_ = front_.boardAdcData[channel]
+                target_ = self.boardAdc[channel]
+                for t in range(constants.SAMPLES_PER_DATA_BLOCK):
                     # ADC waveform units = volts
-                    self.boardAdc[channel][indexAdc] = 0.000050354 * \
-                        dataQueue.front().boardAdcData[channel][t]
+                    target_[t] = 0.000050354 * channel_[t]
 
-                if lookForTrigger and not triggerFound and triggerChannel >= 16:
-                    if triggerPolarity:
+            if lookForTrigger and not triggerFound and triggerChannel >= 16:
+                adc_ = self.boardAdc[triggerChannel - 16]
+                if triggerPolarity:
+                    for t in range(constants.SAMPLES_PER_DATA_BLOCK):            
                         # Trigger on logic low
-                        if self.boardAdc[triggerChannel - 16][indexAdc] < AnalogTriggerThreshold:
-                            triggerTimeIndex = dataQueue.front().timeStamp[t]
+                        if adc_[t] < AnalogTriggerThreshold:
+                            triggerTimeIndex = front_.timeStamp[t]
                             triggerFound = True
 
-                    else:
+                else:
+                    for t in range(constants.SAMPLES_PER_DATA_BLOCK):
                         # Trigger on logic high
-                        if self.boardAdc[triggerChannel - 16][indexAdc] >= AnalogTriggerThreshold:
-                            triggerTimeIndex = dataQueue.front().timeStamp[t]
+                        if adc_[t] >= AnalogTriggerThreshold:
+                            triggerTimeIndex = front_.timeStamp[t]
                             triggerFound = True
-
-                indexAdc += 1
 
             # Load USB interface board digital input and output waveforms
-            for t in range(constants.SAMPLES_PER_DATA_BLOCK):
-                for channel in range(16):
-                    self.boardDigIn[channel][indexDig] = (
-                        dataQueue.front().ttlIn[t] & (1 << channel)) != 0
-                    self.boardDigOut[channel][indexDig] = (
-                        dataQueue.front().ttlOut[t] & (1 << channel)) != 0
+            front_ = dataQueue.front()
+            for channel in range(16):
+                ttlIn_ = front_.ttlIn
+                ttlOut_ = front_.ttlOut
+                for t in range(constants.SAMPLES_PER_DATA_BLOCK):
+                    self.boardDigIn[channel][t] = (
+                        ttlIn_[t] & (1 << channel)) != 0
+                    self.boardDigOut[channel][t] = (
+                        ttlOut_[t] & (1 << channel)) != 0
 
-                if lookForTrigger and not triggerFound and triggerChannel < 16:
-                    if triggerPolarity:
+            
+            if lookForTrigger and not triggerFound and triggerChannel < 16:
+                digIn_ = self.boardDigIn[triggerChannel]
+                if triggerPolarity:
+                    for t in range(constants.SAMPLES_PER_DATA_BLOCK):
                         # Trigger on logic low
-                        if self.boardDigIn[triggerChannel][indexDig] == 0:
-                            triggerTimeIndex = dataQueue.front().timeStamp[t]
+                        if digIn_[t] == 0:
+                            triggerTimeIndex = front_.timeStamp[t]
                             triggerFound = True
 
-                    else:
+                else:
+                    for t in range(constants.SAMPLES_PER_DATA_BLOCK):
                         # Trigger on logic high
-                        if self.boardDigIn[triggerChannel][indexDig] == 1:
-                            triggerTimeIndex = dataQueue.front().timeStamp[t]
+                        if digIn_[t] == 1:
+                            triggerTimeIndex = front_.timeStamp[t]
                             triggerFound = True
-
-                indexDig += 1
 
             # Optionally send binary data to binary output stream
             if saveToDisk:
@@ -1355,9 +1356,7 @@ class SignalProcessor():
     # no USB interface board present.
     # Returns number of bytes written to binary datastream out if saveToDisk == True.
     def loadSyntheticData(self, numBlocks, sampleRate, saveToDisk, out, saveFormat, saveTemp, saveTtlOut):
-        indexAux = 0
         indexSupply = 0
-        indexAdc = 0
         indexDig = 0
         numWordsWritten = 0
 
@@ -1435,11 +1434,9 @@ class SignalProcessor():
             for t in range(0, constants.SAMPLES_PER_DATA_BLOCK, 4):
                 for stream in range(self.numDataStreams):
                     # Just use DC values.
-                    self.auxChannel[stream][0][indexAux] = 0.5
-                    self.auxChannel[stream][1][indexAux] = 1.0
-                    self.auxChannel[stream][2][indexAux] = 2.0
-
-                indexAux += 1
+                    self.auxChannel[stream][0][t] = 0.5
+                    self.auxChannel[stream][1][t] = 1.0
+                    self.auxChannel[stream][2][t] = 2.0
 
             # Generate synthetic supply voltage and temperature data.
             for stream in range(self.numDataStreams):
@@ -1455,9 +1452,7 @@ class SignalProcessor():
             # Generate synthetic USB interface board ADC data.
             for t in range(constants.SAMPLES_PER_DATA_BLOCK):
                 for channel in range(8):
-                    self.boardAdc[channel][indexAdc] = 0.0
-
-                indexAdc += 1
+                    self.boardAdc[channel][t] = 0.0
 
             # Generate synthetic USB interface board digital I/O data.
             for t in range(constants.SAMPLES_PER_DATA_BLOCK):

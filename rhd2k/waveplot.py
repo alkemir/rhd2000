@@ -239,7 +239,7 @@ class WavePlot(QWidget):
             self.highlightFrame(self.findClosestFrame(event.pos()) +
                                 self.topLeftFrame[self.selectedPort], True)
         else:
-            QWidget.mousePressEvent(event)
+            QWidget.mousePressEvent(self, event)
 
     def mouseReleaseEvent(self, event):
         """ If we are dragging a frame, release it in the appropriate place,
@@ -278,7 +278,7 @@ class WavePlot(QWidget):
                     self.dragToIndex + self.topLeftFrame[self.selectedPort], False)
                 self.refreshScreen()
         else:
-            QWidget.mouseReleaseEvent(event)
+            QWidget.mouseReleaseEvent(self, event)
 
     def mouseMoveEvent(self, event):
         """ Drag a selected frame when the mouse is moved."""

@@ -8,7 +8,7 @@ print ("opening board")
 board.open()
 
 print ("uploading main.bit")
-board.uploadFpgaBitfile(b'main.bit')
+board.uploadFpgaBitfile('main.bit')
 
 print ("initializing")
 board.initialize()
@@ -26,10 +26,10 @@ print ("turn one LED on")
 board.setLedDisplay([1, 0, 0, 0, 0, 0, 0, 0])
 
 print ("setup register to optimize MUX-related settings")
-chipRegisters = rhd2k.registers.Registers(board.getSampleRate())
+chipRegisters = rhd2k.Rhd2000Registers(board.getSampleRate())
 
 print ("creating command list")
-commandList = rhd2k.vector.Vector()
+commandList = rhd2k.VectorInt()
 
 print ("creating sequence for impedance testing")
 commandSequenceLength = chipRegisters.createCommandListZcheckDac(commandList, 1000.0, 128.0)
@@ -96,7 +96,7 @@ print ("number of 16-bit words in FIFO: ")
 print (board.numWordsInFifo())
 
 print ("creating data block")
-dataBlock = rhd2k.datablocks.DataBlock(board.getNumEnabledDataStreams())
+dataBlock = rhd2k.Rhd2000DataBlock(board.getNumEnabledDataStreams())
 
 print ("reading data block")
 board.readDataBlock(dataBlock)

@@ -2,7 +2,7 @@ import ctypes
 import platform
 import os
 
-from rhd2000datablock import Rhd2000DataBlock
+from .rhd2000datablock import Rhd2000DataBlock
 
 libname = '/librhd2k.so'
 if platform.system() == 'Windows' or 'CYGWIN' in platform.system():

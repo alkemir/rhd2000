@@ -6,7 +6,7 @@ from .rhd2000datablock import Rhd2000DataBlock
 
 libname = '/librhd2k.so'
 if platform.system() == 'Windows' or 'CYGWIN' in platform.system():
-    libname =  '/librhd2k.dll'
+    libname = '/librhd2k.dll'
 rhd2klib = ctypes.cdll.LoadLibrary(os.path.dirname(__file__) + libname)
 
 
@@ -33,7 +33,7 @@ class DataQueue:
         return int(rhd2klib.queue_data_size(self))
 
     def front(self):
-        if self.front_cache == None:
+        if self.front_cache is None:
             self.front_cache = Rhd2000DataBlock(0, ptr=rhd2klib.queue_data_front(self))
         return self.front_cache
 
